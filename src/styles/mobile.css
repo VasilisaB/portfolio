@@ -1,0 +1,238 @@
+/* ═══════════════════════════════════════════════════
+   Vasilisa Boronnikova — Mobile Responsive Styles
+   These rules only activate below 768px and use
+   !important to safely override inline styles.
+   Desktop layout is completely unchanged.
+   ═══════════════════════════════════════════════════ */
+
+/* ── Hamburger: hidden on desktop, shown on mobile ── */
+.vb-hamburger {
+  display: none;
+}
+
+/* ── Nav links: shown on desktop, hidden on mobile ── */
+.vb-nav-links {
+  display: flex;
+}
+
+/* ── Mobile overlay: never shown on desktop ── */
+.vb-mobile-overlay {
+  display: none;
+}
+
+/* ── Footer: desktop style ── */
+.vb-footer {
+  display: flex;
+}
+
+@media (max-width: 768px) {
+
+  /* ─────────────────────────────────────────
+     Navigation
+  ───────────────────────────────────────── */
+
+  .vb-hamburger {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem;
+    color: #1C1C1A;
+    z-index: 200;
+  }
+
+  .vb-nav-links {
+    display: none !important;
+  }
+
+  .vb-mobile-overlay {
+    display: flex !important;
+    position: fixed;
+    inset: 0;
+    background: #ECEAE6;
+    z-index: 150;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .vb-mobile-overlay.is-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ─────────────────────────────────────────
+     Global section horizontal padding
+     (overrides the 3.5rem inline padding)
+  ───────────────────────────────────────── */
+
+  .vb-section {
+    padding-left: 1.35rem !important;
+    padding-right: 1.35rem !important;
+  }
+
+  /* Inner max-width containers — remove their own horizontal padding
+     since the outer section already has padding */
+  .vb-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Hero inner container — also remove paddingTop so it doesn't
+     double-stack with the section padding */
+  .vb-hero-inner {
+    padding-top: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Reduce hero section top padding */
+  .vb-hero-section {
+    padding-top: 7rem !important;
+    padding-bottom: 2rem !important;
+    min-height: auto !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Two-column grids → single column
+  ───────────────────────────────────────── */
+
+  .vb-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Three-column grids → single column
+  ───────────────────────────────────────── */
+
+  .vb-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 1.75rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Project alternating grid (Work page)
+     Always: text on top, image below
+  ───────────────────────────────────────── */
+
+  .vb-project-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem !important;
+  }
+
+  .vb-project-text {
+    order: 1 !important;
+  }
+
+  .vb-project-image {
+    order: 2 !important;
+  }
+
+  /* Hide the offset glass panel behind portrait/project images —
+     it causes clipping/overlap issues on small screens */
+  .vb-portrait-bg {
+    display: none !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Five-column metadata → two columns
+  ───────────────────────────────────────── */
+
+  .vb-meta-5col {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Case study sections (1fr / 2fr → 1fr)
+  ───────────────────────────────────────── */
+
+  .vb-case-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Work page section header (flex row → col)
+  ───────────────────────────────────────── */
+
+  .vb-section-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Reduce large vertical padding on sections
+  ───────────────────────────────────────── */
+
+  .vb-section-tall {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Footer → stack vertically
+  ───────────────────────────────────────── */
+
+  .vb-footer {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+    padding: 2rem 1.35rem !important;
+  }
+
+  .vb-footer-links {
+    flex-wrap: wrap !important;
+    gap: 1.25rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Contact form — full width
+  ───────────────────────────────────────── */
+
+  .vb-contact-form {
+    padding: 1.75rem 1.5rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Work page: reduce project block padding
+  ───────────────────────────────────────── */
+
+  .vb-project-block {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Approach chips grid (2×2 → 1 col)
+  ───────────────────────────────────────── */
+
+  .vb-chips-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Facts grid inner (2 col → 1 col)
+  ───────────────────────────────────────── */
+
+  .vb-facts-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ─────────────────────────────────────────
+     Work page: hide glass frame offset panels
+  ───────────────────────────────────────── */
+
+  .vb-glass-frame {
+    display: none !important;
+  }
+}
