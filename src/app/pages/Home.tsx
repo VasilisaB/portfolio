@@ -2,7 +2,8 @@ import { Link } from "react-router";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
 import { AtmosphericImage } from "../components/AtmosphericImage";
-
+import wilbotOverview1 from "../../assets/images/wilbot-overview1.png";
+import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
 const PORTRAIT_URL =
   "https://images.unsplash.com/photo-1612485842581-0dce50d5268f?w=900&q=80&fit=crop";
 
@@ -319,7 +320,7 @@ export default function Home() {
               title: "Wil-Bot",
               type: "AI Interaction Design",
               to: "/work/wil-bot",
-              img: "https://images.unsplash.com/photo-1770169272345-9636d5ef2681?w=800&q=75&fit=crop",
+              img: wilbotOverview2,
             },
             {
               num: "02",

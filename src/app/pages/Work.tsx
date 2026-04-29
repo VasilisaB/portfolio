@@ -2,6 +2,8 @@ import { Link } from "react-router";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { AtmosphericImage } from "../components/AtmosphericImage";
+import wilbotOverview1 from "../../assets/images/wilbot-overview1.png";
+import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
 
 const projects = [
   {
@@ -13,7 +15,7 @@ const projects = [
     partner: "Celonis",
     type: "AI Interaction Design / Concept Prototype",
     role: "Concept, interaction, visual system, prototype",
-    img: "https://images.unsplash.com/photo-1770169272345-9636d5ef2681?w=1200&q=80&fit=crop",
+    img: wilbotOverview1,
     mood: "smoky, technological, atmospheric, softly futuristic",
   },
   {

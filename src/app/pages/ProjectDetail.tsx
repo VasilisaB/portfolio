@@ -2,6 +2,9 @@ import { useParams, Link } from "react-router";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import wilbotOverview1 from "../../assets/images/wilbot-overview1.png";
+import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
+
 
 const projectData: Record<
   string,
@@ -28,9 +31,9 @@ const projectData: Record<
     timeline: "2023 — 10 weeks",
     tools: "Figma, Protopie, After Effects",
     heroImg:
-      "https://images.unsplash.com/photo-1770169272345-9636d5ef2681?w=1600&q=80&fit=crop",
+      wilbotOverview1,
     processImg:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=75&fit=crop",
+      wilbotOverview2,
     uiImg:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=75&fit=crop",
   },
