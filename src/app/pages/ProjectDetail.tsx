@@ -4,11 +4,9 @@ import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
-import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
 import wilbotOverviewWide1 from "../../assets/images/wilbot-overview-wide1.png";
 import wilbotOverviewWide2 from "../../assets/images/wilbot-overview-wide2.png";
 import wilbotCore from "../../assets/images/wil-core.png";
-
 
 type CaseStudyContent = {
   overviewTitle: string;
@@ -22,17 +20,23 @@ type CaseStudyContent = {
   strategyParagraphs: string[];
   strategyChips: string[];
 
+  systemSectionLabel?: string;
   systemTitle: string;
   systemParagraphBeforeImage: string;
   systemParagraphAfterImage: string;
   systemFlow: string;
+  systemFlowLabel?: string;
+  processImageLabel?: string;
 
+  interactionSectionLabel?: string;
   interactionTitle: string;
   interactionParagraphs: string[];
   interactionChips: string[];
 
+  outcomeSectionLabel?: string;
   outcomeTitle: string;
   outcomeParagraphs: string[];
+  outcomeImageLabel?: string;
 
   reflectionTitle: string;
   reflectionParagraphs: string[];
@@ -86,6 +90,8 @@ const wilbotCaseStudy: CaseStudyContent = {
     "The prototype used Gemini for language generation, a structured knowledge base based on process mining material, ElevenLabs for voice output, MediaPipe for simple facial feedback, and a 3D point-cloud layer for the visual interface.",
   systemFlow:
     "User question → AI interpretation → Knowledge retrieval → Generated answer → Voice output → Visual feedback",
+  systemFlowLabel: "Interaction flow",
+  processImageLabel: "System architecture and interaction flow",
 
   interactionTitle: "Visual and interaction design",
   interactionParagraphs: [
@@ -105,11 +111,79 @@ const wilbotCaseStudy: CaseStudyContent = {
     "The final prototype shows how AI can support understanding when it is designed as an experience, not just as an answer generator. Wil-Bot combines conversation, voice, spatial navigation, and subtle feedback into one learning interface.",
     "For a hiring audience, the project demonstrates concept development, interaction design, visual system thinking, AI prototyping, and the ability to translate abstract technology into a clear user experience.",
   ],
+  outcomeImageLabel: "Final interface and visual system",
 
   reflectionTitle: "What I learned",
   reflectionParagraphs: [
     "This project taught me that AI interaction design is not only about what the system says. It is also about how users enter the topic, how information is sequenced, and how the interface supports understanding.",
     "My main takeaway was that complex expertise does not always need to be reduced. Often, it needs a better structure, a clearer entry point, and an interaction model that lets people explore at their own pace.",
+  ],
+};
+
+const walkableMemoryCaseStudy: CaseStudyContent = {
+  overviewTitle: "Location-based remembrance experience",
+  overviewParagraphs: [
+    "Walkable Memory is a mobile web concept that makes Moosburg’s hidden Stalag VII-A history more visible in public space. Users can access short location-based stories directly on site, without downloading an app.",
+    "The project focused on creating a low-barrier entry point into a sensitive historical topic. Instead of overwhelming users with dense information, the experience introduces history through clear navigation, short stories, and optional deeper context.",
+  ],
+
+  challengeTitle: "Making hidden history visible",
+  challengeParagraphs: [
+    "Moosburg’s Stalag VII-A history is highly significant, but mostly invisible in everyday life. The former camp area has become part of the normal city fabric, so people move through historically important places without recognizing them.",
+    "Existing access points were fragmented or too dense for quick engagement. The design challenge was to connect historical locations into one coherent visitor experience that felt accessible, respectful, and easy to start.",
+  ],
+  challengeQuote:
+    "How might we make hidden history visible on site without making the experience feel heavy, confusing, or inappropriate?",
+
+  strategyTitle: "Low barrier first, depth second",
+  strategyParagraphs: [
+    "Research showed that the core issue was not a lack of information, but a lack of a clear entry point. Users needed to understand within seconds what the experience is, how long it takes, and how to begin.",
+    "This led to one main product principle: low barrier first, depth second. The concept starts with short one-minute stories tied to real places, then offers deeper historical context for users who want to continue.",
+  ],
+  strategyChips: [
+    "Mobile web access with no install",
+    "Map-based entry into real locations",
+    "One-minute stories for quick engagement",
+    "Optional deeper layers through audio and AR",
+  ],
+
+  systemSectionLabel: "04 / Structure",
+  systemTitle: "Information architecture",
+  systemParagraphBeforeImage:
+    "The experience was structured around a simple repeatable flow: users open the map, choose a location, read or listen to a short story, then decide whether to continue deeper or move to the next place.",
+  systemParagraphAfterImage:
+    "This structure reduced cognitive load and supported flexible engagement. Users could stop after one location or continue through several, depending on their time, attention, and emotional readiness.",
+  systemFlow:
+    "Map → Choose location → One-minute story → Deeper context → Continue exploring",
+  systemFlowLabel: "Core user flow",
+  processImageLabel: "Information architecture and mobile flow",
+
+  interactionSectionLabel: "05 / Testing",
+  interactionTitle: "Testing and iteration",
+  interactionParagraphs: [
+    "We tested the concept through quick lo-fi feedback, guided hi-fi walkthroughs on phone, and a remote prototype test with an AR and audio simulation. The goal was to understand confusion, hesitation, and emotional response rather than optimize task speed.",
+    "Testing showed that the one-minute story format was easy to understand and that the overall idea felt approachable. At the same time, users needed clearer map interactions, stronger content depth for key locations, and better readability outdoors.",
+    "Based on this feedback, we moved from a dark interface to a lighter visual system, improved map controls, added a simple route planner, and expanded content around important locations such as the memorial square.",
+  ],
+  interactionChips: [
+    "Light interface for outdoor readability",
+    "Clearer map controls",
+    "Simple route planner",
+    "More depth for key locations",
+  ],
+
+  outcomeSectionLabel: "06 / Outcome",
+  outcomeTitle: "What the concept demonstrates",
+  outcomeParagraphs: [
+    "Walkable Memory shows how UX can support public remembrance by lowering the barrier to entry. Instead of requiring a full museum visit, the concept creates a lightweight place-based interaction that fits real movement through the city.",
+    "For a hiring audience, the project demonstrates user research, information architecture, mobile interaction design, prototyping, usability testing, and careful ethical framing for a sensitive cultural context.",
+  ],
+  outcomeImageLabel: "Final mobile concept and interaction system",
+
+  reflectionTitle: "What I learned",
+  reflectionParagraphs: [
+    "This project taught me that accessibility is not about simplifying history. It is about designing the right entry point into it.",
+    "I also learned that usability in a memorial context is not only functional. Tone, pacing, visual restraint, and the decision not to gamify are part of the user experience.",
   ],
 };
 
@@ -146,6 +220,8 @@ const fallbackCaseStudy: CaseStudyContent = {
   systemParagraphAfterImage:
     "This process helped transform the initial idea into a more structured and communicable design outcome.",
   systemFlow: "Research → Concept → Prototype → Refinement → Final outcome",
+  systemFlowLabel: "Process flow",
+  processImageLabel: "Process and structure",
 
   interactionTitle: "Design details",
   interactionParagraphs: [
@@ -164,6 +240,7 @@ const fallbackCaseStudy: CaseStudyContent = {
     "The final outcome demonstrates how the project idea was translated into a coherent visual and interactive experience.",
     "The result communicates the concept clearly while maintaining a strong visual identity.",
   ],
+  outcomeImageLabel: "Final outcome",
 
   reflectionTitle: "What I learned",
   reflectionParagraphs: [
@@ -191,18 +268,19 @@ const projectData: Record<string, Project> = {
   "walkable-memory": {
     title: "Walkable Memory",
     summary:
-      "A location-based mobile concept that helps people encounter hidden history through short stories connected to real places.",
+      "A low-barrier mobile web concept that makes Moosburg’s hidden Stalag VII-A history visible through short location-based stories.",
     partner: "Academic Project",
-    type: "Service Design / Mobile Concept",
-    role: "User research, concept development, UX/UI design, prototyping, testing",
-    timeline: "2022 · 14 weeks",
-    tools: "Figma, Miro, Notion, field research",
+    type: "Service Design / Mobile UX Concept",
+    role: "Research · Concept development · Interaction design · Prototyping · Usability testing",
+    timeline: "Oct 2025 · Feb 2026",
+    tools: "Figma, Figma Make, Miro, field research, usability testing",
     heroImg:
       "https://images.unsplash.com/photo-1639562471471-4de7bfc813ae?w=1600&q=80&fit=crop",
     processImg:
       "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&q=75&fit=crop",
     uiImg:
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=75&fit=crop",
+    caseStudy: walkableMemoryCaseStudy,
   },
 
   eclypt: {
@@ -626,16 +704,19 @@ export default function ProjectDetail() {
           <ChipsGrid items={caseStudy.strategyChips} />
         </CaseSection>
 
-        <CaseSection label="04 / System" title={caseStudy.systemTitle}>
+        <CaseSection
+          label={caseStudy.systemSectionLabel ?? "04 / System"}
+          title={caseStudy.systemTitle}
+        >
           <p style={{ ...bodyTextStyle, marginBottom: "3rem" }}>
             {caseStudy.systemParagraphBeforeImage}
           </p>
 
           <AtmosphericImageBlock
             src={project.processImg}
-            alt={`${project.title} system architecture`}
+            alt={`${project.title} process image`}
             aspectRatio="16/7"
-            label="System architecture and interaction flow"
+            label={caseStudy.processImageLabel ?? "Process and structure"}
           />
 
           <div
@@ -658,7 +739,7 @@ export default function ProjectDetail() {
                 marginBottom: "0.65rem",
               }}
             >
-              Interaction flow
+              {caseStudy.systemFlowLabel ?? "Flow"}
             </p>
 
             <p
@@ -680,7 +761,7 @@ export default function ProjectDetail() {
         </CaseSection>
 
         <CaseSection
-          label="05 / Interaction"
+          label={caseStudy.interactionSectionLabel ?? "05 / Interaction"}
           title={caseStudy.interactionTitle}
         >
           {caseStudy.interactionParagraphs.map((paragraph, index) => (
@@ -701,12 +782,15 @@ export default function ProjectDetail() {
           <ChipsGrid items={caseStudy.interactionChips} />
         </CaseSection>
 
-        <CaseSection label="06 / Outcome" title={caseStudy.outcomeTitle}>
+        <CaseSection
+          label={caseStudy.outcomeSectionLabel ?? "06 / Outcome"}
+          title={caseStudy.outcomeTitle}
+        >
           <AtmosphericImageBlock
             src={project.uiImg}
             alt={`${project.title} final interface`}
             aspectRatio="16/8"
-            label="Final interface and visual system"
+            label={caseStudy.outcomeImageLabel ?? "Final outcome"}
           />
 
           {caseStudy.outcomeParagraphs.map((paragraph, index) => (
