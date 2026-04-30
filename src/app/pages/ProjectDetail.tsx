@@ -4,10 +4,11 @@ import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
-import wilbotOverview1 from "../../assets/images/wilbot-overview1.png";
 import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
 import wilbotOverviewWide1 from "../../assets/images/wilbot-overview-wide1.png";
 import wilbotOverviewWide2 from "../../assets/images/wilbot-overview-wide2.png";
+import wilbotCore from "../../assets/images/wil-core.png";
+
 
 type CaseStudyContent = {
   overviewTitle: string;
@@ -52,63 +53,63 @@ type Project = {
 };
 
 const wilbotCaseStudy: CaseStudyContent = {
-  overviewTitle: "An interface for exploring expert knowledge",
+  overviewTitle: "AI knowledge interface for process mining",
   overviewParagraphs: [
-    "Wil-Bot is an AI knowledge interface designed to make process mining easier to understand for people encountering the topic for the first time. Instead of presenting information through static documentation or a linear tutorial, the system allows users to ask questions, follow related concepts, and gradually build a mental model through interaction.",
-    "The project was developed in collaboration with Celonis and explores how expert knowledge can become more accessible through conversational AI, spatial visualization, and subtle adaptive feedback.",
+    "Wil-Bot is a conversational AI interface designed to make process mining easier to understand for first-time users. Instead of reading documentation, users can ask questions, receive spoken explanations, and explore related topics through a spatial interface.",
+    "The project focused on translating complex expert knowledge into a more accessible interaction model for business audiences, especially people encountering Celonis in event, presentation, or sales contexts.",
   ],
 
-  challengeTitle: "The accessibility gap",
+  challengeTitle: "Making complex technology understandable",
   challengeParagraphs: [
-    "Process mining allows organizations to analyze and improve real operational processes using system data. While the technology is powerful, it can be difficult for non-technical audiences to understand quickly — especially in contexts like conferences, presentations, or first client conversations.",
-    "A business decision-maker may leave a Celonis event interested in the idea, but still struggle to explain what process mining actually does, how it relates to their company, or why it matters. The challenge was therefore not a lack of information, but a lack of accessible entry points.",
+    "Process mining is powerful, but difficult to explain quickly. Non-technical users often understand that the technology is valuable, but struggle to describe what it does, how it works, or how it could apply to their company.",
+    "The design challenge was to create a clearer entry point into the topic. The goal was not to simplify process mining itself, but to design a more intuitive way into understanding it.",
   ],
   challengeQuote:
-    "How might we turn complex domain knowledge into something people can explore before they fully understand it?",
+    "How might we help people explore complex domain knowledge before they fully understand it?",
 
-  strategyTitle: "Designing a bridge into complexity",
+  strategyTitle: "From chatbot to knowledge interface",
   strategyParagraphs: [
-    "During the project, we realized that most users do not need expert-level training at the first point of contact. They need a bridge between curiosity and understanding. The design strategy was therefore to create an interface that explains, connects, and guides — without overwhelming the user with technical depth too early.",
-    "Three ideas shaped the concept: knowledge is easier to grasp through conversation, complex topics are better understood as connected systems rather than linear texts, and visual structure can help people remember relationships between ideas.",
+    "The main design decision was to move beyond a traditional chatbot. Wil-Bot was designed as a knowledge interface where conversation, visual structure, and topic navigation work together.",
+    "This made the experience less linear and more exploratory. Users could ask their own questions, follow connected concepts, and gradually build a mental model of process mining.",
   ],
   strategyChips: [
-    "Conversational explanation instead of static documentation",
-    "Knowledge connections instead of linear learning paths",
-    "Point-cloud visualization instead of a human avatar",
-    "Adaptive guidance based on user understanding",
+    "Conversation instead of static documentation",
+    "Topic navigation instead of linear learning",
+    "Point-cloud entity instead of human avatar",
+    "Adaptive prompts for moments of confusion",
   ],
 
-  systemTitle: "From question to knowledge space",
+  systemTitle: "How the system works",
   systemParagraphBeforeImage:
-    "Wil-Bot was designed as a modular AI system connecting several layers: user input, AI interpretation, knowledge retrieval, response generation, voice output, and visual feedback. When a user asks a question, the system interprets the request, retrieves relevant knowledge, generates an explanation, and translates the interaction into a visual state.",
+    "Wil-Bot connects several system layers: user input, AI interpretation, structured knowledge retrieval, response generation, voice output, and visual feedback. Each question becomes part of an ongoing interaction rather than a single isolated answer.",
   systemParagraphAfterImage:
-    "The interaction flow follows a simple logic: the user asks a question, the system interprets it, retrieves relevant information from a structured knowledge base, generates a response, and presents the answer through both voice and visual motion. This made the experience feel less like reading a database and more like navigating a living knowledge space.",
+    "The prototype used Gemini for language generation, a structured knowledge base based on process mining material, ElevenLabs for voice output, MediaPipe for simple facial feedback, and a 3D point-cloud layer for the visual interface.",
   systemFlow:
-    "User question → AI interpretation → Knowledge retrieval → Response generation → Voice + visual output",
+    "User question → AI interpretation → Knowledge retrieval → Generated answer → Voice output → Visual feedback",
 
-  interactionTitle: "A visual system for thinking",
+  interactionTitle: "Visual and interaction design",
   interactionParagraphs: [
-    "Instead of representing Wil-Bot as a realistic human avatar, we designed it as a dynamic point-cloud entity. This avoided the uncanny valley while still giving the system a recognizable presence. The particles suggest data, knowledge, and movement — aligning visually with Celonis’ identity as a data-driven company.",
-    "The point cloud changes depending on the state of the interaction. During thinking moments, particles disperse and reorganize around the core structure. During voice responses, the form subtly pulses with the rhythm of the generated speech. As new concepts appear, topic nodes emerge in the interface, allowing users to return to previous ideas and explore related themes.",
-    "To make the system feel more responsive, we also experimented with a lightweight emotional feedback layer. Using MediaPipe FaceLandmarker, the prototype could react to simple user states such as confusion or engagement by suggesting clearer prompts or alternative explanations.",
+    "Wil-Bot is represented as a dynamic point-cloud entity rather than a realistic human avatar. This avoided the uncanny valley while still giving the system a clear presence. The particles reflect ideas of data, knowledge, movement, and connection.",
+    "The interface changes depending on the interaction state. When Wil-Bot is processing a question, the particles reorganize. When it speaks, the form subtly pulses. When new topics appear, small nodes are added so users can return to previous ideas.",
+    "We also explored a lightweight adaptive layer using MediaPipe FaceLandmarker. If the user appears confused, Wil-Bot can suggest clearer prompts or offer a simpler explanation.",
   ],
   interactionChips: [
-    "Thinking state: particles disperse and orbit",
-    "Speaking state: the form pulses with voice output",
-    "Topic nodes: new concepts become revisitable points",
-    "Camera feedback: confusion can trigger clearer prompts",
+    "Thinking state with moving particles",
+    "Voice-reactive visual feedback",
+    "Topic nodes for revisiting ideas",
+    "Camera-based adaptive suggestions",
   ],
 
-  outcomeTitle: "Turning explanation into exploration",
+  outcomeTitle: "What the prototype demonstrates",
   outcomeParagraphs: [
-    "The final prototype demonstrated how AI, visualization, and interaction design can work together to create a more accessible entry point into complex technology. Instead of simplifying process mining itself, Wil-Bot simplifies the path into understanding it.",
-    "By combining conversational explanations with spatial topic navigation, the system turns abstract expertise into something users can ask about, hear, revisit, and explore. The result is not just a chatbot, but a guided knowledge interface for first-time learners and decision-makers.",
+    "The final prototype shows how AI can support understanding when it is designed as an experience, not just as an answer generator. Wil-Bot combines conversation, voice, spatial navigation, and subtle feedback into one learning interface.",
+    "For a hiring audience, the project demonstrates concept development, interaction design, visual system thinking, AI prototyping, and the ability to translate abstract technology into a clear user experience.",
   ],
 
   reflectionTitle: "What I learned",
   reflectionParagraphs: [
-    "This project helped me understand that designing with AI is not only about generating answers. It is about shaping the conditions in which people can build understanding. The interface, the rhythm of interaction, the visual feedback, and the level of explanation all influence whether a system feels helpful or overwhelming.",
-    "My main takeaway was that complex expertise does not always need to be reduced. Sometimes it needs to be staged more carefully — through clearer entry points, adaptive guidance, and interaction patterns that let users explore at their own pace.",
+    "This project taught me that AI interaction design is not only about what the system says. It is also about how users enter the topic, how information is sequenced, and how the interface supports understanding.",
+    "My main takeaway was that complex expertise does not always need to be reduced. Often, it needs a better structure, a clearer entry point, and an interaction model that lets people explore at their own pace.",
   ],
 };
 
@@ -178,12 +179,12 @@ const projectData: Record<string, Project> = {
       "An AI knowledge interface that helps people understand process mining through conversation, spatial navigation, and adaptive explanation.",
     partner: "Celonis",
     type: "AI Interaction Design / Concept Prototype",
-    role: "Concept development · Interaction design · Visual system design · Prototype development",
-    timeline: "[insert timeline]",
+    role: "Concept development · Interaction design · Visual system design · AI prototype",
+    timeline: "Oct 2025 · Feb 2026",
     tools: "Figma, Protopie, Gemini API, ElevenLabs, MediaPipe, 3D visualization",
     heroImg: wilbotOverviewWide1,
-    processImg: wilbotOverviewWide2,
-    uiImg: wilbotOverview2,
+    processImg: wilbotCore,
+    uiImg: wilbotOverviewWide2,
     caseStudy: wilbotCaseStudy,
   },
 
@@ -194,7 +195,7 @@ const projectData: Record<string, Project> = {
     partner: "Academic Project",
     type: "Service Design / Mobile Concept",
     role: "User research, concept development, UX/UI design, prototyping, testing",
-    timeline: "2022 — 14 weeks",
+    timeline: "2022 · 14 weeks",
     tools: "Figma, Miro, Notion, field research",
     heroImg:
       "https://images.unsplash.com/photo-1639562471471-4de7bfc813ae?w=1600&q=80&fit=crop",
@@ -211,7 +212,7 @@ const projectData: Record<string, Project> = {
     partner: "Self-initiated",
     type: "Experimental Branding / Visual Identity",
     role: "Art direction, brand concept, visual system design",
-    timeline: "2023 — 6 weeks",
+    timeline: "2023 · 6 weeks",
     tools: "Figma, Photoshop, Illustrator",
     heroImg:
       "https://images.unsplash.com/photo-1658051794980-c3fd2f67e255?w=1600&q=80&fit=crop",
@@ -408,7 +409,6 @@ export default function ProjectDetail() {
 
   return (
     <main style={{ background: "#ECEAE6" }}>
-      {/* ─── HERO ─── */}
       <SmokySection
         intensity="strong"
         style={{ paddingTop: "10rem", background: "#ECEAE6" }}
@@ -421,7 +421,6 @@ export default function ProjectDetail() {
             padding: "0 3.5rem 5rem",
           }}
         >
-          {/* Back link */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -446,7 +445,6 @@ export default function ProjectDetail() {
             </Link>
           </motion.div>
 
-          {/* Project title */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -481,7 +479,6 @@ export default function ProjectDetail() {
             {project.summary}
           </motion.p>
 
-          {/* Metadata row */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -535,7 +532,6 @@ export default function ProjectDetail() {
         </div>
       </SmokySection>
 
-      {/* ─── HERO IMAGE ─── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -549,13 +545,12 @@ export default function ProjectDetail() {
       >
         <AtmosphericImageBlock
           src={project.heroImg}
-          alt={`${project.title} — Hero`}
+          alt={`${project.title} hero image`}
           aspectRatio="16/7"
           label="Project overview"
         />
       </motion.div>
 
-      {/* ─── CASE STUDY SECTIONS ─── */}
       <div
         className="vb-section vb-container"
         style={{
@@ -564,7 +559,6 @@ export default function ProjectDetail() {
           padding: "0 3.5rem 8rem",
         }}
       >
-        {/* 01 / Overview */}
         <CaseSection label="01 / Overview" title={caseStudy.overviewTitle}>
           {caseStudy.overviewParagraphs.map((paragraph, index) => (
             <p
@@ -582,7 +576,6 @@ export default function ProjectDetail() {
           ))}
         </CaseSection>
 
-        {/* 02 / Challenge */}
         <CaseSection label="02 / Challenge" title={caseStudy.challengeTitle}>
           {caseStudy.challengeParagraphs.map((paragraph) => (
             <p key={paragraph} style={{ ...bodyTextStyle, marginBottom: "2rem" }}>
@@ -614,7 +607,6 @@ export default function ProjectDetail() {
           </div>
         </CaseSection>
 
-        {/* 03 / Strategy */}
         <CaseSection label="03 / Strategy" title={caseStudy.strategyTitle}>
           {caseStudy.strategyParagraphs.map((paragraph, index) => (
             <p
@@ -634,7 +626,6 @@ export default function ProjectDetail() {
           <ChipsGrid items={caseStudy.strategyChips} />
         </CaseSection>
 
-        {/* 04 / System */}
         <CaseSection label="04 / System" title={caseStudy.systemTitle}>
           <p style={{ ...bodyTextStyle, marginBottom: "3rem" }}>
             {caseStudy.systemParagraphBeforeImage}
@@ -642,7 +633,7 @@ export default function ProjectDetail() {
 
           <AtmosphericImageBlock
             src={project.processImg}
-            alt={`${project.title} — System architecture`}
+            alt={`${project.title} system architecture`}
             aspectRatio="16/7"
             label="System architecture and interaction flow"
           />
@@ -688,7 +679,6 @@ export default function ProjectDetail() {
           </p>
         </CaseSection>
 
-        {/* 05 / Interaction */}
         <CaseSection
           label="05 / Interaction"
           title={caseStudy.interactionTitle}
@@ -711,11 +701,10 @@ export default function ProjectDetail() {
           <ChipsGrid items={caseStudy.interactionChips} />
         </CaseSection>
 
-        {/* 06 / Outcome */}
         <CaseSection label="06 / Outcome" title={caseStudy.outcomeTitle}>
           <AtmosphericImageBlock
             src={project.uiImg}
-            alt={`${project.title} — Final interface`}
+            alt={`${project.title} final interface`}
             aspectRatio="16/8"
             label="Final interface and visual system"
           />
@@ -737,7 +726,6 @@ export default function ProjectDetail() {
           ))}
         </CaseSection>
 
-        {/* 07 / Reflection */}
         <CaseSection label="07 / Reflection" title={caseStudy.reflectionTitle}>
           {caseStudy.reflectionParagraphs.map((paragraph, index) => (
             <p
@@ -755,7 +743,6 @@ export default function ProjectDetail() {
           ))}
         </CaseSection>
 
-        {/* Next project */}
         <div
           style={{
             paddingTop: "5rem",
