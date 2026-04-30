@@ -259,9 +259,9 @@ const projectData: Record<string, Project> = {
     role: "Concept development · Interaction design · Visual system design · AI prototype",
     timeline: "Oct 2025 · Feb 2026",
     tools: "Figma, Protopie, Gemini API, ElevenLabs, MediaPipe, 3D visualization",
-    heroImg: wilbotOverviewWide1,
+    heroImg: wilbotOverviewWide2,
     processImg: wilbotCore,
-    uiImg: wilbotOverviewWide2,
+    uiImg: wilbotOverviewWide1,
     caseStudy: wilbotCaseStudy,
   },
 
