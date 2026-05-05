@@ -4,6 +4,8 @@ import { useState } from "react";
 import { AtmosphericImage } from "../components/AtmosphericImage";
 import wilbotOverview1 from "../../assets/images/wilbot-overview1.png";
 import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
+import walkableOverviewWide5 from "../../assets/images/walkable-overview-wide5.png";
+
 
 const projects = [
   {
@@ -27,7 +29,7 @@ const projects = [
     partner: null,
     type: "Service Design / Mobile Concept",
     role: "User research, concept development, UX/UI design, prototyping, testing",
-    img: "https://images.unsplash.com/photo-1639562471471-4de7bfc813ae?w=1200&q=80&fit=crop",
+    img: walkableOverviewWide5,
     mood: "spatial, respectful, memory-like, soft, cinematic",
   },
   {

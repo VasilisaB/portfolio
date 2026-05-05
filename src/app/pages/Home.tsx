@@ -1,11 +1,350 @@
+import { useEffect, useMemo, useRef } from "react";
+import type { CSSProperties } from "react";
 import { Link } from "react-router";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
 import { AtmosphericImage } from "../components/AtmosphericImage";
-import wilbotOverview1 from "../../assets/images/wilbot-overview1.png";
 import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
+import walkableOverviewWide5 from "../../assets/images/walkable-overview-wide5.png";
+
 const PORTRAIT_URL =
   "https://images.unsplash.com/photo-1612485842581-0dce50d5268f?w=900&q=80&fit=crop";
+
+type PixelLine = {
+  text: string;
+  color?: string;
+};
+
+type Particle = {
+  x: number;
+  y: number;
+  homeX: number;
+  homeY: number;
+  vx: number;
+  vy: number;
+  size: number;
+  color: string;
+  seed: number;
+};
+
+type PixelHeaderProps = {
+  lines: PixelLine[];
+  fontFamily?: string;
+  fontWeight?: number | string;
+  className?: string;
+  style?: CSSProperties;
+  sampleGap?: number;
+  pixelSize?: number;
+  repelRadius?: number;
+  repelStrength?: number;
+};
+
+function PixelHeader({
+  lines,
+  fontFamily = `"redaction-70", sans-serif`,
+  fontWeight = 700,
+  className = "",
+  style,
+  sampleGap = 5,
+  pixelSize = 4,
+  repelRadius = 75,
+  repelStrength = 1.35,
+}: PixelHeaderProps) {
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const particlesRef = useRef<Particle[]>([]);
+  const frameRef = useRef<number | null>(null);
+
+  const mouseRef = useRef({
+    x: -9999,
+    y: -9999,
+    active: false,
+  });
+
+  const plainText = useMemo(() => lines.map((line) => line.text).join(" "), [lines]);
+
+  const lineKey = useMemo(
+    () => lines.map((line) => `${line.text}-${line.color ?? ""}`).join("|"),
+    [lines]
+  );
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    const canvas = canvasRef.current;
+
+    if (!wrapper || !canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let disposed = false;
+    let resizeTimeout: number | undefined;
+
+    const buildParticles = () => {
+      const rect = wrapper.getBoundingClientRect();
+      const width = Math.max(320, Math.floor(rect.width));
+      const height = Math.max(260, Math.floor(rect.height));
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, width, height);
+      ctx.imageSmoothingEnabled = false;
+
+      const offscreen = document.createElement("canvas");
+      offscreen.width = width;
+      offscreen.height = height;
+
+      const offCtx = offscreen.getContext("2d", {
+        willReadFrequently: true,
+      });
+
+      if (!offCtx) return;
+
+      offCtx.clearRect(0, 0, width, height);
+      offCtx.imageSmoothingEnabled = false;
+      offCtx.textAlign = "left";
+      offCtx.textBaseline = "top";
+
+      let fontSize = Math.min(Math.max(width * 0.15, 56), 155);
+      let lineHeight = fontSize * 0.9;
+
+      const setFont = () => {
+        offCtx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+      };
+
+      setFont();
+
+      const getLongestLineWidth = () => {
+        return Math.max(...lines.map((line) => offCtx.measureText(line.text).width));
+      };
+
+      while (getLongestLineWidth() > width && fontSize > 42) {
+        fontSize -= 3;
+        lineHeight = fontSize * 0.9;
+        setFont();
+      }
+
+      const totalTextHeight = lineHeight * lines.length;
+      const startX = 0;
+      const startY = Math.max(0, (height - totalTextHeight) / 2);
+
+      lines.forEach((line, index) => {
+        offCtx.fillStyle = line.color ?? "#1C1C1A";
+        offCtx.fillText(line.text, startX, startY + index * lineHeight);
+      });
+
+      const imageData = offCtx.getImageData(0, 0, width, height);
+      const data = imageData.data;
+      const particles: Particle[] = [];
+
+      for (let y = 0; y < height; y += sampleGap) {
+        for (let x = 0; x < width; x += sampleGap) {
+          const index = (y * width + x) * 4;
+          const alpha = data[index + 3];
+
+          if (alpha > 80) {
+            const r = data[index];
+            const g = data[index + 1];
+            const b = data[index + 2];
+
+            particles.push({
+              x,
+              y,
+              homeX: x,
+              homeY: y,
+              vx: 0,
+              vy: 0,
+              size: pixelSize,
+              color: `rgba(${r}, ${g}, ${b}, ${alpha / 255})`,
+              seed: Math.random() * Math.PI * 2,
+            });
+          }
+        }
+      }
+
+      particlesRef.current = particles;
+    };
+
+    const animate = () => {
+      if (disposed) return;
+
+      const rect = wrapper.getBoundingClientRect();
+      const width = Math.max(320, Math.floor(rect.width));
+      const height = Math.max(260, Math.floor(rect.height));
+      const now = performance.now();
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.imageSmoothingEnabled = false;
+
+      const mouse = mouseRef.current;
+      const particles = particlesRef.current;
+
+      for (const particle of particles) {
+        const homeForce = 0.05;
+        const friction = 0.84;
+
+        const toHomeX = particle.homeX - particle.x;
+        const toHomeY = particle.homeY - particle.y;
+
+        particle.vx += toHomeX * homeForce;
+        particle.vy += toHomeY * homeForce;
+
+        if (mouse.active) {
+          const dx = particle.homeX - mouse.x;
+          const dy = particle.homeY - mouse.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < repelRadius && distance > 0.001) {
+            const proximity = 1 - distance / repelRadius;
+            const force = proximity * proximity * repelStrength;
+
+            particle.vx += (dx / distance) * force;
+            particle.vy += (dy / distance) * force;
+
+            const livingMotion = 0.04 * proximity;
+
+            particle.vx += Math.cos(now * 0.002 + particle.seed) * livingMotion;
+            particle.vy += Math.sin(now * 0.0022 + particle.seed) * livingMotion;
+          }
+        }
+
+        particle.vx *= friction;
+        particle.vy *= friction;
+
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        ctx.fillStyle = particle.color;
+        ctx.fillRect(
+          Math.round(particle.x),
+          Math.round(particle.y),
+          particle.size,
+          particle.size
+        );
+      }
+
+      frameRef.current = requestAnimationFrame(animate);
+    };
+
+    const initialize = async () => {
+      if ("fonts" in document) {
+        try {
+          await document.fonts.load(`${fontWeight} 120px ${fontFamily}`);
+          await document.fonts.ready;
+        } catch {
+          await document.fonts.ready;
+        }
+      }
+
+      if (disposed) return;
+
+      buildParticles();
+
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+
+      animate();
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      const rect = wrapper.getBoundingClientRect();
+
+      mouseRef.current.x = event.clientX - rect.left;
+      mouseRef.current.y = event.clientY - rect.top;
+      mouseRef.current.active = true;
+    };
+
+    const handlePointerLeave = () => {
+      mouseRef.current.active = false;
+      mouseRef.current.x = -9999;
+      mouseRef.current.y = -9999;
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      window.clearTimeout(resizeTimeout);
+
+      resizeTimeout = window.setTimeout(() => {
+        buildParticles();
+      }, 120);
+    });
+
+    resizeObserver.observe(wrapper);
+
+    wrapper.addEventListener("pointermove", handlePointerMove);
+    wrapper.addEventListener("pointerleave", handlePointerLeave);
+
+    initialize();
+
+    return () => {
+      disposed = true;
+
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+
+      window.clearTimeout(resizeTimeout);
+      resizeObserver.disconnect();
+
+      wrapper.removeEventListener("pointermove", handlePointerMove);
+      wrapper.removeEventListener("pointerleave", handlePointerLeave);
+    };
+  }, [
+    lineKey,
+    fontFamily,
+    fontWeight,
+    sampleGap,
+    pixelSize,
+    repelRadius,
+    repelStrength,
+  ]);
+
+  return (
+    <div
+      ref={wrapperRef}
+      className={className}
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "clamp(360px, 44vw, 620px)",
+        cursor: "crosshair",
+        ...style,
+      }}
+    >
+      <h1
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          border: 0,
+          clip: "rect(0, 0, 0, 0)",
+        }}
+      >
+        {plainText}
+      </h1>
+
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        style={{
+          display: "block",
+          width: "100%",
+          height: "100%",
+          imageRendering: "pixelated",
+        }}
+      />
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -37,7 +376,12 @@ export default function Home() {
 
         <div
           className="vb-hero-inner"
-          style={{ maxWidth: "1300px", margin: "0 auto", width: "100%", paddingTop: "10rem" }}
+          style={{
+            maxWidth: "1300px",
+            margin: "0 auto",
+            width: "100%",
+            paddingTop: "10rem",
+          }}
         >
           {/* Label */}
           <motion.p
@@ -58,28 +402,34 @@ export default function Home() {
           </motion.p>
 
           {/* Hero headline */}
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.22, 0.61, 0.36, 1] }}
+            transition={{
+              duration: 1,
+              delay: 0.2,
+              ease: [0.22, 0.61, 0.36, 1],
+            }}
             style={{
-              fontFamily: "Syne, sans-serif",
-              fontSize: "clamp(3.8rem, 8.5vw, 10.5rem)",
-              fontWeight: 800,
-              lineHeight: 0.92,
-              color: "#1C1C1A",
-              letterSpacing: "-0.025em",
-              maxWidth: "15ch",
+              width: "min(100%, 1100px)",
               marginBottom: "0",
             }}
           >
-            Designing
-            <br />
-            systems with
-            <br />
-            <span style={{ color: "#7A7872" }}>structure</span>
-            <br />& feeling.
-          </motion.h1>
+            <PixelHeader
+              fontFamily={`"redaction-70", sans-serif`}
+              fontWeight={700}
+              sampleGap={5}
+              pixelSize={4}
+              repelRadius={75}
+              repelStrength={1.35}
+              lines={[
+                { text: "Designing", color: "#1C1C1A" },
+                { text: "systems with", color: "#1C1C1A" },
+                { text: "structure", color: "#7A7872" },
+                { text: "& feeling.", color: "#1C1C1A" },
+              ]}
+            />
+          </motion.div>
 
           {/* Right-aligned scroll hint */}
           <motion.div
@@ -146,7 +496,10 @@ export default function Home() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{
+              duration: 0.9,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
           >
             <p
               style={{
@@ -244,7 +597,11 @@ export default function Home() {
             initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{
+              duration: 1,
+              delay: 0.15,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
             style={{ position: "relative" }}
           >
             <AtmosphericImage
@@ -286,6 +643,7 @@ export default function Home() {
           >
             Selected Work
           </p>
+
           <Link
             to="/work"
             style={{
@@ -327,7 +685,7 @@ export default function Home() {
               title: "Walkable Memory",
               type: "Service Design / Mobile",
               to: "/work/walkable-memory",
-              img: "https://images.unsplash.com/photo-1639562471471-4de7bfc813ae?w=800&q=75&fit=crop",
+              img: walkableOverviewWide5,
             },
             {
               num: "03",
@@ -352,6 +710,7 @@ export default function Home() {
                   feather={false}
                   style={{ marginBottom: "1.2rem" }}
                 />
+
                 <div
                   style={{
                     display: "flex",
@@ -373,6 +732,7 @@ export default function Home() {
                     >
                       {num}
                     </p>
+
                     <p
                       style={{
                         fontFamily: "Syne, sans-serif",
@@ -384,6 +744,7 @@ export default function Home() {
                     >
                       {title}
                     </p>
+
                     <p
                       style={{
                         fontFamily: "Inter, sans-serif",
@@ -395,6 +756,7 @@ export default function Home() {
                       {type}
                     </p>
                   </div>
+
                   <span
                     style={{
                       fontFamily: "Inter, sans-serif",

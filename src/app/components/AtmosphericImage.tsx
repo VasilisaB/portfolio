@@ -78,8 +78,8 @@ export function AtmosphericImage({
             height: "100%",
             objectFit: "cover",
             filter: hovered
-              ? "saturate(0.82) contrast(0.97)"
-              : "saturate(0.60) contrast(0.92)",
+              ? "saturate(0.95) contrast(1.02)"
+              : "saturate(0.82) contrast(0.98)",
             transition:
               "filter 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.85s ease",
             transform: hovered ? "scale(1.025)" : "scale(1.0)",
@@ -92,8 +92,8 @@ export function AtmosphericImage({
             position: "absolute",
             inset: 0,
             background: hovered
-              ? "rgba(236, 234, 230, 0.02)"
-              : "rgba(236, 234, 230, 0.17)",
+              ? "rgba(236, 234, 230, 0.01)"
+              : "rgba(236, 234, 230, 0.07)",
             transition: "background 0.85s ease",
             pointerEvents: "none",
           }}
