@@ -20,17 +20,15 @@ type Particle = {
   y: number;
   homeX: number;
   homeY: number;
-  vx: number;
-  vy: number;
   size: number;
   color: string;
-  seed: number;
 };
 
 type PixelHeaderProps = {
   lines: PixelLine[];
   fontFamily?: string;
   fontWeight?: number | string;
+  fontStyle?: string;
   className?: string;
   style?: CSSProperties;
   sampleGap?: number;
@@ -42,13 +40,14 @@ type PixelHeaderProps = {
 function PixelHeader({
   lines,
   fontFamily = `"redaction-70", sans-serif`,
-  fontWeight = 700,
+  fontWeight = 70,
+  fontStyle = "normal",
   className = "",
   style,
-  sampleGap = 5,
-  pixelSize = 4,
-  repelRadius = 75,
-  repelStrength = 1.35,
+  sampleGap = 3,
+  pixelSize = 5,
+  repelRadius = 5,
+  repelStrength = 4,
 }: PixelHeaderProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -114,7 +113,7 @@ function PixelHeader({
       let lineHeight = fontSize * 0.9;
 
       const setFont = () => {
-        offCtx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+        offCtx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
       };
 
       setFont();
@@ -157,11 +156,8 @@ function PixelHeader({
               y,
               homeX: x,
               homeY: y,
-              vx: 0,
-              vy: 0,
               size: pixelSize,
               color: `rgba(${r}, ${g}, ${b}, ${alpha / 255})`,
-              seed: Math.random() * Math.PI * 2,
             });
           }
         }
@@ -176,7 +172,6 @@ function PixelHeader({
       const rect = wrapper.getBoundingClientRect();
       const width = Math.max(320, Math.floor(rect.width));
       const height = Math.max(260, Math.floor(rect.height));
-      const now = performance.now();
 
       ctx.clearRect(0, 0, width, height);
       ctx.imageSmoothingEnabled = false;
@@ -185,14 +180,8 @@ function PixelHeader({
       const particles = particlesRef.current;
 
       for (const particle of particles) {
-        const homeForce = 0.05;
-        const friction = 0.84;
-
-        const toHomeX = particle.homeX - particle.x;
-        const toHomeY = particle.homeY - particle.y;
-
-        particle.vx += toHomeX * homeForce;
-        particle.vy += toHomeY * homeForce;
+        let targetX = particle.homeX;
+        let targetY = particle.homeY;
 
         if (mouse.active) {
           const dx = particle.homeX - mouse.x;
@@ -201,23 +190,17 @@ function PixelHeader({
 
           if (distance < repelRadius && distance > 0.001) {
             const proximity = 1 - distance / repelRadius;
-            const force = proximity * proximity * repelStrength;
+            const displacement = proximity * proximity * repelStrength;
 
-            particle.vx += (dx / distance) * force;
-            particle.vy += (dy / distance) * force;
-
-            const livingMotion = 0.04 * proximity;
-
-            particle.vx += Math.cos(now * 0.002 + particle.seed) * livingMotion;
-            particle.vy += Math.sin(now * 0.0022 + particle.seed) * livingMotion;
+            targetX = particle.homeX + (dx / distance) * displacement;
+            targetY = particle.homeY + (dy / distance) * displacement;
           }
         }
 
-        particle.vx *= friction;
-        particle.vy *= friction;
+        const ease = mouse.active ? 0.10 : 0.16;
 
-        particle.x += particle.vx;
-        particle.y += particle.vy;
+        particle.x += (targetX - particle.x) * ease;
+        particle.y += (targetY - particle.y) * ease;
 
         ctx.fillStyle = particle.color;
         ctx.fillRect(
@@ -234,7 +217,7 @@ function PixelHeader({
     const initialize = async () => {
       if ("fonts" in document) {
         try {
-          await document.fonts.load(`${fontWeight} 120px ${fontFamily}`);
+          await document.fonts.load(`${fontStyle} ${fontWeight} 120px ${fontFamily}`);
           await document.fonts.ready;
         } catch {
           await document.fonts.ready;
@@ -298,6 +281,7 @@ function PixelHeader({
     lineKey,
     fontFamily,
     fontWeight,
+    fontStyle,
     sampleGap,
     pixelSize,
     repelRadius,
@@ -418,10 +402,11 @@ export default function Home() {
             <PixelHeader
               fontFamily={`"redaction-70", sans-serif`}
               fontWeight={700}
-              sampleGap={5}
-              pixelSize={4}
-              repelRadius={75}
-              repelStrength={1.35}
+              fontStyle="normal"
+              sampleGap={4}
+              pixelSize={4.35}
+              repelRadius={900}
+              repelStrength={2.5}
               lines={[
                 { text: "Designing", color: "#1C1C1A" },
                 { text: "systems with", color: "#1C1C1A" },
