@@ -7,6 +7,16 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import wilbotOverviewWide1 from "../../assets/images/wilbot-overview-wide1.png";
 import wilbotOverviewWide2 from "../../assets/images/wilbot-overview-wide2.png";
 import wilbotCore from "../../assets/images/wil-core.png";
+import walkableOverview1 from "../../assets/images/walkable-overview1.png";
+import walkableOverview2 from "../../assets/images/walkable-overview2.png";
+import walkableOverview3 from "../../assets/images/walkable-overview3.png";
+import walkableOverview4 from "../../assets/images/walkable-overview4.png";
+import walkableOverview5 from "../../assets/images/walkable-overview5.png";
+import walkableOverviewWide1 from "../../assets/images/walkable-overview-wide1.png";
+import walkableOverviewWide2 from "../../assets/images/walkable-overview-wide2.png";
+import walkableOverviewWide3 from "../../assets/images/walkable-overview-wide3.png";
+import walkableOverviewWide4 from "../../assets/images/walkable-overview-wide4.png";
+import walkableOverviewWide5 from "../../assets/images/walkable-overview-wide5.png";
 
 type CaseStudyContent = {
   overviewTitle: string;
@@ -275,11 +285,11 @@ const projectData: Record<string, Project> = {
     timeline: "Oct 2025 · Feb 2026",
     tools: "Figma, Figma Make, Miro, field research, usability testing",
     heroImg:
-      "https://images.unsplash.com/photo-1639562471471-4de7bfc813ae?w=1600&q=80&fit=crop",
+      walkableOverviewWide5,
     processImg:
-      "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1200&q=75&fit=crop",
+      walkableOverviewWide3,
     uiImg:
-      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=75&fit=crop",
+      walkableOverviewWide1,
     caseStudy: walkableMemoryCaseStudy,
   },
 
