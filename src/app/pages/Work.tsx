@@ -163,6 +163,7 @@ function ProjectBlock({
                 >
                   Partner
                 </p>
+
                 <p
                   style={{
                     fontFamily: BODY_FONT,
@@ -193,6 +194,7 @@ function ProjectBlock({
               >
                 Project
               </p>
+
               <p
                 style={{
                   fontFamily: BODY_FONT,
@@ -222,6 +224,7 @@ function ProjectBlock({
               >
                 Role
               </p>
+
               <p
                 style={{
                   fontFamily: BODY_FONT,
@@ -277,12 +280,22 @@ function ProjectBlock({
             order: isEven ? 2 : 1,
           }}
         >
-          <AtmosphericImage
-            src={project.img}
-            alt={project.title}
-            aspectRatio="16/10"
-            feather={false}
-          />
+          <Link
+            to={`/work/${project.slug}`}
+            aria-label={`Open ${project.title} case study`}
+            style={{
+              display: "block",
+              textDecoration: "none",
+              cursor: "pointer",
+            }}
+          >
+            <AtmosphericImage
+              src={project.img}
+              alt={project.title}
+              aspectRatio="16/10"
+              feather={false}
+            />
+          </Link>
         </div>
       </div>
     </motion.article>
@@ -352,7 +365,7 @@ export default function Work() {
               marginBottom: "1.5rem",
             }}
           >
-            Portfolio — 2022–2024
+            Portfolio | 2023–2026
           </motion.p>
 
           <motion.h1
@@ -402,8 +415,8 @@ export default function Work() {
             borderTop: "1px solid rgba(28, 28, 26, 0.08)",
           }}
         >
-          More case studies are currently being edited, including client 
-          work and some smaller interaction experiments.
+          More case studies are currently being edited, including client work and
+          some smaller interaction experiments.
         </motion.p>
       </div>
     </main>

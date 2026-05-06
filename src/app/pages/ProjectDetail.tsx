@@ -12,9 +12,7 @@ import walkableOverviewWide3 from "../../assets/images/walkable-overview-wide3.p
 import walkableOverviewWide5 from "../../assets/images/walkable-overview-wide5.png";
 import eclypt1 from "../../assets/images/eclypt-overview-wide3png.png";
 import eclypt3 from "../../assets/images/eclypt-overview-wide1png.png";
-import eclypt4 from "../../assets/images/eclypt-overview1.png";
 import eclypt2 from "../../assets/images/eclypt-overview3.png";
-
 
 const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
 const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
@@ -301,12 +299,9 @@ const projectData: Record<string, Project> = {
     role: "Art direction, brand concept, visual system design",
     timeline: "2023 · 6 weeks",
     tools: "Figma, Photoshop, Illustrator",
-    heroImg:
-      eclypt1,
-    processImg:
-      eclypt2,
-    uiImg:
-      eclypt3,
+    heroImg: eclypt1,
+    processImg: eclypt2,
+    uiImg: eclypt3,
   },
 
   "project-4": {
@@ -347,35 +342,63 @@ function AtmosphericImageBlock({
   alt,
   aspectRatio = "16/8",
   label,
+  to,
 }: {
   src: string;
   alt: string;
   aspectRatio?: string;
   label?: string;
+  to?: string;
 }) {
+  const imageContent = (
+    <div
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        aspectRatio,
+        cursor: to ? "pointer" : "default",
+      }}
+    >
+      <ImageWithFallback
+        src={src}
+        alt={alt}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          filter: "saturate(0.68) contrast(0.93)",
+          transition: "transform 0.6s ease, filter 0.6s ease",
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(236, 234, 230, 0.1)",
+          boxShadow: "inset 0 0 80px rgba(236, 234, 230, 0.28)",
+          pointerEvents: "none",
+        }}
+      />
+    </div>
+  );
+
   return (
     <div style={{ position: "relative" }}>
-      <div style={{ position: "relative", overflow: "hidden", aspectRatio }}>
-        <ImageWithFallback
-          src={src}
-          alt={alt}
+      {to ? (
+        <Link
+          to={to}
+          aria-label={`Open ${alt}`}
           style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            filter: "saturate(0.68) contrast(0.93)",
+            display: "block",
+            textDecoration: "none",
           }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(236, 234, 230, 0.1)",
-            boxShadow: "inset 0 0 80px rgba(236, 234, 230, 0.28)",
-            pointerEvents: "none",
-          }}
-        />
-      </div>
+        >
+          {imageContent}
+        </Link>
+      ) : (
+        imageContent
+      )}
 
       {label && (
         <p
@@ -497,8 +520,11 @@ function ChipsGrid({ items }: { items: string[] }) {
 
 export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
-  const project = projectData[id ?? ""] ?? projectData["wil-bot"];
+
+  const currentProjectId = id && projectData[id] ? id : "wil-bot";
+  const project = projectData[currentProjectId];
   const caseStudy = project.caseStudy ?? fallbackCaseStudy;
+  const currentProjectPath = `/work/${currentProjectId}`;
 
   useEffect(() => {
     const adobeFontHref = "https://use.typekit.net/brk5oxs.css";
@@ -668,6 +694,7 @@ export default function ProjectDetail() {
           alt={`${project.title} hero image`}
           aspectRatio="16/7"
           label="Project overview"
+          to={currentProjectPath}
         />
       </motion.div>
 
@@ -761,6 +788,7 @@ export default function ProjectDetail() {
             alt={`${project.title} process image`}
             aspectRatio="16/7"
             label={caseStudy.processImageLabel ?? "Process and structure"}
+            to={currentProjectPath}
           />
 
           <div
@@ -833,6 +861,7 @@ export default function ProjectDetail() {
             alt={`${project.title} final interface`}
             aspectRatio="16/8"
             label={caseStudy.outcomeImageLabel ?? "Final outcome"}
+            to={currentProjectPath}
           />
 
           {caseStudy.outcomeParagraphs.map((paragraph, index) => (

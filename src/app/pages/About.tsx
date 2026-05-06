@@ -3,13 +3,13 @@ import { Link } from "react-router";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
 import { AtmosphericImage } from "../components/AtmosphericImage";
+import v1 from "../../assets/images/v1.png";
 
 const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
 const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
 const BODY_FONT = `"Inter", sans-serif`;
 
-const PORTRAIT_URL =
-  "https://images.unsplash.com/photo-1612485842581-0dce50d5268f?w=900&q=80&fit=crop";
+const PORTRAIT_URL = v1;
 
 const facts = [
   { label: "Location", value: "Munich, Germany" },
@@ -152,7 +152,7 @@ export default function About() {
             maxWidth: "1300px",
             margin: "0 auto",
             display: "grid",
-            gridTemplateColumns: "1.2fr 1fr",
+            gridTemplateColumns: "minmax(0, 2fr) minmax(280px, 1fr)",
             gap: "7rem",
             alignItems: "start",
           }}
@@ -175,9 +175,9 @@ export default function About() {
               }}
             >
               A digital designer working across UX/UI, concept development,
-              branding, and interactive systems — with a particular interest in
-              the meeting point between clarity and atmosphere.
+              branding, and interactive systems.
             </p>
+
             <p
               style={{
                 fontFamily: BODY_FONT,
@@ -189,10 +189,11 @@ export default function About() {
               }}
             >
               My work is grounded in a belief that good design is invisible when
-              it works — but unmistakably present when it doesn't. I'm drawn to
+              it works, but unmistakably present when it doesn't. I'm drawn to
               the tension between structure and feeling, between precision and
               intuition.
             </p>
+
             <p
               style={{
                 fontFamily: BODY_FONT,
@@ -203,8 +204,8 @@ export default function About() {
               }}
             >
               Based in Munich, I'm currently studying Computer Science and
-              Design, developing projects that sit at the edges of disciplines —
-              neither purely technical nor purely aesthetic, but thoughtfully
+              Design, developing projects that sit at the edges of disciplines.
+              Neither purely technical nor purely aesthetic, but thoughtfully
               both.
             </p>
           </motion.div>
@@ -215,6 +216,12 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.1 }}
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: "420px",
+              justifySelf: "end",
+            }}
           >
             <AtmosphericImage
               src={PORTRAIT_URL}
@@ -264,6 +271,7 @@ export default function About() {
               >
                 Design approach
               </p>
+
               <h2
                 style={{
                   fontFamily: TITLE_FONT,
@@ -295,9 +303,10 @@ export default function About() {
               >
                 I believe design should balance emotional quality with structural
                 precision. Systems that feel truly intuitive aren't born from
-                simplicity alone — they come from understanding how people think,
+                simplicity alone. They come from understanding how people think,
                 feel, and move through space and information.
               </p>
+
               <p
                 style={{
                   fontFamily: BODY_FONT,
@@ -381,6 +390,7 @@ export default function About() {
               >
                 Background
               </p>
+
               <h2
                 style={{
                   fontFamily: TITLE_FONT,
@@ -436,6 +446,7 @@ export default function About() {
                     >
                       {label}
                     </p>
+
                     <p
                       style={{
                         fontFamily: BODY_FONT,
@@ -486,9 +497,7 @@ export default function About() {
               What I care about
             </p>
 
-            <div
-              style={{ display: "flex", flexWrap: "wrap" as const, gap: "0" }}
-            >
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0" }}>
               {interests.map((item, i) => (
                 <motion.div
                   key={item}
@@ -546,7 +555,9 @@ export default function About() {
               }}
             >
               Get in touch
-              <span style={{ fontFamily: BODY_FONT, fontSize: "0.9rem" }}>→</span>
+              <span style={{ fontFamily: BODY_FONT, fontSize: "0.9rem" }}>
+                →
+              </span>
             </Link>
           </motion.div>
         </div>

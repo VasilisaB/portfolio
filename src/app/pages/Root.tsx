@@ -24,13 +24,12 @@ function Footer() {
           letterSpacing: "0.06em",
         }}
       >
-        © 2024 Vasilisa Boronnikova
+        © 2026 Vasilisa Boronnikova
       </p>
       <div className="vb-footer-links" style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
         {[
-          { label: "LinkedIn", href: "https://linkedin.com" },
-          { label: "Instagram", href: "https://instagram.com" },
-          { label: "Email", href: "mailto:vasilisa@example.com" },
+          { label: "LinkedIn", href: "https://linkedin.com/in/vasilisa-boronnikova-722407236" },
+          { label: "Email", href: "mailto:vasilisa.boronnikova@gmail.com" },
         ].map(({ label, href }) => (
           <a
             key={label}

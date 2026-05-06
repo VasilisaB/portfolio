@@ -9,18 +9,13 @@ const BODY_FONT = `"Inter", sans-serif`;
 const links = [
   {
     label: "LinkedIn",
-    href: "https://linkedin.com",
+    href: "https://linkedin.com/in/vasilisa-boronnikova-722407236",
     note: "Professional network",
   },
   {
-    label: "Instagram",
-    href: "https://instagram.com",
-    note: "Process & work-in-progress",
-  },
-  {
     label: "Email",
-    href: "mailto:vasilisa@example.com",
-    note: "vasilisa@example.com",
+    href: "mailto:vasilisa.boronnikova@gmail.com",
+    note: "vasilisa.boronnikova@gmail.com",
   },
 ];
 
@@ -278,7 +273,7 @@ export default function Contact() {
                   color: "#5A5A56",
                 }}
               >
-                Munich, Germany — Central European Time
+                Munich, Germany
               </p>
             </motion.div>
           </motion.div>

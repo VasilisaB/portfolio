@@ -6,9 +6,9 @@ import { AtmosphericImage } from "../components/AtmosphericImage";
 import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
 import walkableOverviewWide5 from "../../assets/images/walkable-overview-wide5.png";
 import eclypt1 from "../../assets/images/eclypt-overview-wide2png.png";
+import v1 from "../../assets/images/v1.png";
 
-const PORTRAIT_URL =
-  "https://images.unsplash.com/photo-1612485842581-0dce50d5268f?w=900&q=80&fit=crop";
+const PORTRAIT_URL = v1;
 
 const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
 const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
@@ -96,7 +96,7 @@ export default function Home() {
               textTransform: "uppercase",
             }}
           >
-            Digital Designer — Munich
+            Digital Designer | Munich
           </motion.p>
 
           {/* Hero headline */}
@@ -186,7 +186,7 @@ export default function Home() {
             maxWidth: "1300px",
             margin: "0 auto",
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "minmax(0, 2fr) minmax(280px, 1fr)",
             gap: "6rem",
             alignItems: "start",
           }}
@@ -213,7 +213,7 @@ export default function Home() {
               }}
             >
               I design digital experiences at the intersection of technology,
-              aesthetics, and human behavior — creating systems that are both
+              aesthetics, and human behavior, creating systems that are both
               intuitive and deeply human.
             </p>
 
@@ -309,11 +309,16 @@ export default function Home() {
               delay: 0.15,
               ease: [0.25, 0.46, 0.45, 0.94],
             }}
-            style={{ position: "relative" }}
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: "420px",
+              justifySelf: "end",
+            }}
           >
             <AtmosphericImage
               src={PORTRAIT_URL}
-              alt="Vasilisa Boronnikova — Portrait"
+              alt="Vasilisa Boronnikova"
               aspectRatio="3/4"
               feather
             />
