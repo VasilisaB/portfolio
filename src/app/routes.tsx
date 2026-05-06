@@ -6,16 +6,21 @@ import ProjectDetail from "./pages/ProjectDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 
-export const router = createBrowserRouter([
+export const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      Component: Root,
+      children: [
+        { index: true, Component: Home },
+        { path: "work", Component: Work },
+        { path: "work/:id", Component: ProjectDetail },
+        { path: "about", Component: About },
+        { path: "contact", Component: Contact },
+      ],
+    },
+  ],
   {
-    path: "/",
-    Component: Root,
-    children: [
-      { index: true, Component: Home },
-      { path: "work", Component: Work },
-      { path: "work/:id", Component: ProjectDetail },
-      { path: "about", Component: About },
-      { path: "contact", Component: Contact },
-    ],
-  },
-]);
+    basename: import.meta.env.BASE_URL.replace(/\/$/, ""),
+  }
+);
