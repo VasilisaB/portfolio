@@ -6,7 +6,6 @@ import wilbotOverview1 from "../../assets/images/wilbot-overview1.png";
 import walkableOverviewWide5 from "../../assets/images/walkable-overview-wide5.png";
 import eclypt1 from "../../assets/images/eclypt-overview-wide2png.png";
 
-
 const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
 const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
 const BODY_FONT = `"Inter", sans-serif`;
@@ -47,18 +46,6 @@ const projects = [
     role: "Art direction, brand concept, visual system design",
     img: eclypt1,
     mood: "sculptural, editorial, experimental, dark-luxury",
-  },
-  {
-    num: "04",
-    slug: "project-4",
-    title: "Coming soon",
-    description:
-      "A new project is on the way. Stay tuned for the next case study and fresh work updates.",
-    partner: null,
-    type: "Coming soon",
-    role: "Coming soon",
-    img: "https://images.unsplash.com/photo-1693760631069-89e1f6fee6b2?w=1200&q=80&fit=crop",
-    mood: "coming soon",
   },
 ];
 
@@ -396,6 +383,28 @@ export default function Work() {
             <ProjectBlock key={project.slug} project={project} index={i} />
           ))}
         </div>
+
+        {/* More coming soon note */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          style={{
+            fontFamily: BODY_FONT,
+            fontSize: "0.95rem",
+            fontWeight: 300,
+            lineHeight: 1.7,
+            color: "#5A5A56",
+            maxWidth: "42ch",
+            marginTop: "2rem",
+            paddingTop: "3rem",
+            borderTop: "1px solid rgba(28, 28, 26, 0.08)",
+          }}
+        >
+          More case studies are currently being edited, including client 
+          work and some smaller interaction experiments.
+        </motion.p>
       </div>
     </main>
   );
