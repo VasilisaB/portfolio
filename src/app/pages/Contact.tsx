@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
 import cvPdfUrl from "../../assets/cv/Vasilisa-Boronnikova-CV.pdf?url";
@@ -7,16 +7,27 @@ const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
 const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
 const BODY_FONT = `"Inter", sans-serif`;
 
-const links = [
+const CONTACT_EMAIL = "vasilisa.boronnikova@gmail.com";
+
+type ContactLink = {
+  label: string;
+  href: string;
+  note: string;
+  target?: "_blank";
+  download?: string;
+};
+
+const links: ContactLink[] = [
   {
     label: "LinkedIn",
     href: "https://linkedin.com/in/vasilisa-boronnikova-722407236",
     note: "Professional network",
+    target: "_blank",
   },
   {
     label: "Email",
-    href: "mailto:vasilisa.boronnikova@gmail.com",
-    note: "vasilisa.boronnikova@gmail.com",
+    href: `mailto:${CONTACT_EMAIL}`,
+    note: CONTACT_EMAIL,
   },
   {
     label: "CV",
@@ -32,7 +43,9 @@ export default function Contact() {
     email: "",
     message: "",
   });
+
   const [focused, setFocused] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "opened">("idle");
 
   useEffect(() => {
     const adobeFontHref = "https://use.typekit.net/brk5oxs.css";
@@ -61,6 +74,29 @@ export default function Contact() {
 
     loadFonts();
   }, []);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const subject = `Portfolio message from ${
+      formState.name.trim() || "Website visitor"
+    }`;
+
+    const body = `
+Name: ${formState.name}
+Email: ${formState.email}
+
+Message:
+${formState.message}
+`.trim();
+
+    const mailtoLink = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailtoLink;
+    setStatus("opened");
+  };
 
   const inputStyle = (field: string) => ({
     width: "100%",
@@ -309,7 +345,7 @@ export default function Contact() {
             </p>
 
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleSubmit}
               className="vb-contact-form"
               style={{
                 padding: "2.5rem 3rem",
@@ -339,6 +375,7 @@ export default function Contact() {
                 <input
                   id="name"
                   type="text"
+                  required
                   value={formState.name}
                   onChange={(e) =>
                     setFormState((s) => ({ ...s, name: e.target.value }))
@@ -373,6 +410,7 @@ export default function Contact() {
                 <input
                   id="email"
                   type="email"
+                  required
                   value={formState.email}
                   onChange={(e) =>
                     setFormState((s) => ({ ...s, email: e.target.value }))
@@ -407,6 +445,7 @@ export default function Contact() {
                 <textarea
                   id="message"
                   rows={5}
+                  required
                   value={formState.message}
                   onChange={(e) =>
                     setFormState((s) => ({ ...s, message: e.target.value }))
@@ -473,6 +512,23 @@ export default function Contact() {
                   →
                 </span>
               </button>
+
+              {status === "opened" && (
+                <p
+                  aria-live="polite"
+                  style={{
+                    marginTop: "1.5rem",
+                    fontFamily: BODY_FONT,
+                    fontSize: "0.85rem",
+                    fontWeight: 300,
+                    lineHeight: 1.6,
+                    color: "#5A5A56",
+                  }}
+                >
+                  Your email app should open with the message prepared. Please
+                  press send there to complete it.
+                </p>
+              )}
             </form>
           </motion.div>
         </div>
