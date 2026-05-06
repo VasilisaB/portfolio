@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useParams, Link } from "react-router";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
@@ -7,16 +7,18 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import wilbotOverviewWide1 from "../../assets/images/wilbot-overview-wide1.png";
 import wilbotOverviewWide2 from "../../assets/images/wilbot-overview-wide2.png";
 import wilbotCore from "../../assets/images/wil-core.png";
-import walkableOverview1 from "../../assets/images/walkable-overview1.png";
-import walkableOverview2 from "../../assets/images/walkable-overview2.png";
-import walkableOverview3 from "../../assets/images/walkable-overview3.png";
-import walkableOverview4 from "../../assets/images/walkable-overview4.png";
-import walkableOverview5 from "../../assets/images/walkable-overview5.png";
 import walkableOverviewWide1 from "../../assets/images/walkable-overview-wide1.png";
-import walkableOverviewWide2 from "../../assets/images/walkable-overview-wide2.png";
 import walkableOverviewWide3 from "../../assets/images/walkable-overview-wide3.png";
-import walkableOverviewWide4 from "../../assets/images/walkable-overview-wide4.png";
 import walkableOverviewWide5 from "../../assets/images/walkable-overview-wide5.png";
+import eclypt1 from "../../assets/images/eclypt-overview-wide3png.png";
+import eclypt3 from "../../assets/images/eclypt-overview-wide1png.png";
+import eclypt4 from "../../assets/images/eclypt-overview1.png";
+import eclypt2 from "../../assets/images/eclypt-overview3.png";
+
+
+const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
+const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
+const BODY_FONT = `"Inter", sans-serif`;
 
 type CaseStudyContent = {
   overviewTitle: string;
@@ -284,12 +286,9 @@ const projectData: Record<string, Project> = {
     role: "Research · Concept development · Interaction design · Prototyping · Usability testing",
     timeline: "Oct 2025 · Feb 2026",
     tools: "Figma, Figma Make, Miro, field research, usability testing",
-    heroImg:
-      walkableOverviewWide5,
-    processImg:
-      walkableOverviewWide3,
-    uiImg:
-      walkableOverviewWide1,
+    heroImg: walkableOverviewWide5,
+    processImg: walkableOverviewWide3,
+    uiImg: walkableOverviewWide1,
     caseStudy: walkableMemoryCaseStudy,
   },
 
@@ -303,11 +302,11 @@ const projectData: Record<string, Project> = {
     timeline: "2023 · 6 weeks",
     tools: "Figma, Photoshop, Illustrator",
     heroImg:
-      "https://images.unsplash.com/photo-1658051794980-c3fd2f67e255?w=1600&q=80&fit=crop",
+      eclypt1,
     processImg:
-      "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&q=75&fit=crop",
+      eclypt2,
     uiImg:
-      "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?w=1200&q=75&fit=crop",
+      eclypt3,
   },
 
   "project-4": {
@@ -328,11 +327,19 @@ const projectData: Record<string, Project> = {
 };
 
 const bodyTextStyle = {
-  fontFamily: "Inter, sans-serif",
+  fontFamily: BODY_FONT,
   fontSize: "0.97rem",
   fontWeight: 300,
   lineHeight: 1.82,
   color: "#4A4A46",
+};
+
+const smallAccentStyle = {
+  fontFamily: ACCENT_FONT,
+  fontWeight: 200,
+  fontStyle: "normal",
+  fontSynthesis: "none",
+  letterSpacing: "0.05em",
 };
 
 function AtmosphericImageBlock({
@@ -373,12 +380,10 @@ function AtmosphericImageBlock({
       {label && (
         <p
           style={{
-            fontFamily: "Inter, sans-serif",
-            fontSize: "0.65rem",
-            fontWeight: 400,
-            letterSpacing: "0.12em",
+            ...smallAccentStyle,
+            fontSize: "0.68rem",
             textTransform: "uppercase",
-            color: "#9A9690",
+            color: "#1C1C1A",
             marginTop: "0.75rem",
           }}
         >
@@ -422,13 +427,11 @@ function CaseSection({
         <div>
           <p
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.62rem",
-              fontWeight: 400,
-              letterSpacing: "0.16em",
+              ...smallAccentStyle,
+              fontSize: "0.68rem",
               textTransform: "uppercase",
-              color: "#9A9690",
-              marginBottom: "0.6rem",
+              color: "#1C1C1A",
+              marginBottom: "0.8rem",
             }}
           >
             {label}
@@ -436,12 +439,14 @@ function CaseSection({
 
           <h3
             style={{
-              fontFamily: "Syne, sans-serif",
-              fontSize: "1.4rem",
+              fontFamily: TITLE_FONT,
+              fontSize: "1.25rem",
               fontWeight: 700,
-              lineHeight: 1.2,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              lineHeight: 1.18,
               color: "#1C1C1A",
-              letterSpacing: "-0.01em",
+              letterSpacing: "-0.035em",
             }}
           >
             {title}
@@ -475,7 +480,7 @@ function ChipsGrid({ items }: { items: string[] }) {
         >
           <p
             style={{
-              fontFamily: "Inter, sans-serif",
+              fontFamily: BODY_FONT,
               fontSize: "0.82rem",
               fontWeight: 400,
               color: "#3A3A36",
@@ -494,6 +499,35 @@ export default function ProjectDetail() {
   const { id } = useParams<{ id: string }>();
   const project = projectData[id ?? ""] ?? projectData["wil-bot"];
   const caseStudy = project.caseStudy ?? fallbackCaseStudy;
+
+  useEffect(() => {
+    const adobeFontHref = "https://use.typekit.net/brk5oxs.css";
+    const existingLink = document.querySelector(`link[href="${adobeFontHref}"]`);
+
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = adobeFontHref;
+      document.head.appendChild(link);
+    }
+
+    async function loadFonts() {
+      if ("fonts" in document) {
+        try {
+          await Promise.all([
+            document.fonts.load(`700 120px "normalidad-extended-medium"`),
+            document.fonts.load(`400 24px "normalidad-extended-medium"`),
+            document.fonts.load(`200 24px "normalidad-compact-medium"`),
+          ]);
+          await document.fonts.ready;
+        } catch {
+          await document.fonts.ready;
+        }
+      }
+    }
+
+    loadFonts();
+  }, []);
 
   return (
     <main style={{ background: "#ECEAE6" }}>
@@ -518,12 +552,10 @@ export default function ProjectDetail() {
             <Link
               to="/work"
               style={{
-                fontFamily: "Inter, sans-serif",
+                ...smallAccentStyle,
                 fontSize: "0.75rem",
-                fontWeight: 400,
                 color: "#7A7872",
                 textDecoration: "none",
-                letterSpacing: "0.05em",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "0.5rem",
@@ -538,11 +570,13 @@ export default function ProjectDetail() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 0.61, 0.36, 1] }}
             style={{
-              fontFamily: "Syne, sans-serif",
-              fontSize: "clamp(3.5rem, 7vw, 8.5rem)",
-              fontWeight: 800,
-              lineHeight: 0.92,
-              letterSpacing: "-0.03em",
+              fontFamily: TITLE_FONT,
+              fontSize: "clamp(3rem, 6.4vw, 7.8rem)",
+              fontWeight: 700,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              lineHeight: 0.9,
+              letterSpacing: "-0.055em",
               color: "#1C1C1A",
               marginBottom: "2rem",
             }}
@@ -555,7 +589,7 @@ export default function ProjectDetail() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15 }}
             style={{
-              fontFamily: "Inter, sans-serif",
+              fontFamily: BODY_FONT,
               fontSize: "clamp(1rem, 1.4vw, 1.25rem)",
               fontWeight: 300,
               lineHeight: 1.65,
@@ -591,13 +625,11 @@ export default function ProjectDetail() {
               <div key={label}>
                 <p
                   style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "0.6rem",
-                    fontWeight: 400,
-                    letterSpacing: "0.15em",
+                    ...smallAccentStyle,
+                    fontSize: "0.62rem",
                     textTransform: "uppercase",
-                    color: "#9A9690",
-                    marginBottom: "0.5rem",
+                    color: "#1C1C1A",
+                    marginBottom: "0.55rem",
                   }}
                 >
                   {label}
@@ -605,11 +637,11 @@ export default function ProjectDetail() {
 
                 <p
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: BODY_FONT,
                     fontSize: "0.82rem",
                     fontWeight: 400,
                     lineHeight: 1.5,
-                    color: "#3A3A36",
+                    color: "#1C1C1A",
                   }}
                 >
                   {value}
@@ -682,12 +714,14 @@ export default function ProjectDetail() {
           >
             <p
               style={{
-                fontFamily: "Syne, sans-serif",
-                fontSize: "1.15rem",
-                fontWeight: 600,
+                fontFamily: TITLE_FONT,
+                fontSize: "0.95rem",
+                fontWeight: 700,
+                fontStyle: "normal",
+                fontSynthesis: "none",
                 lineHeight: 1.5,
                 color: "#2A2A28",
-                fontStyle: "italic",
+                letterSpacing: "-0.03em",
               }}
             >
               “{caseStudy.challengeQuote}”
@@ -740,13 +774,11 @@ export default function ProjectDetail() {
           >
             <p
               style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "0.72rem",
-                fontWeight: 400,
-                letterSpacing: "0.12em",
+                ...smallAccentStyle,
+                fontSize: "0.68rem",
                 textTransform: "uppercase",
-                color: "#9A9690",
-                marginBottom: "0.65rem",
+                color: "#1C1C1A",
+                marginBottom: "0.75rem",
               }}
             >
               {caseStudy.systemFlowLabel ?? "Flow"}
@@ -754,10 +786,10 @@ export default function ProjectDetail() {
 
             <p
               style={{
-                fontFamily: "Inter, sans-serif",
+                fontFamily: BODY_FONT,
                 fontSize: "0.9rem",
                 fontWeight: 400,
-                lineHeight: 1.7,
+                lineHeight: 1.65,
                 color: "#3A3A36",
               }}
             >
@@ -849,12 +881,10 @@ export default function ProjectDetail() {
           <Link
             to="/work"
             style={{
-              fontFamily: "Inter, sans-serif",
+              ...smallAccentStyle,
               fontSize: "0.78rem",
-              fontWeight: 400,
               color: "#7A7872",
               textDecoration: "none",
-              letterSpacing: "0.05em",
             }}
           >
             ← All Projects
@@ -862,12 +892,10 @@ export default function ProjectDetail() {
 
           <p
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.65rem",
-              fontWeight: 400,
-              letterSpacing: "0.14em",
+              ...smallAccentStyle,
+              fontSize: "0.68rem",
               textTransform: "uppercase",
-              color: "#9A9690",
+              color: "#1C1C1A",
             }}
           >
             Vasilisa Boronnikova

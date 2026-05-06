@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import { Link } from "react-router";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
 import { AtmosphericImage } from "../components/AtmosphericImage";
+
+const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
+const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
+const BODY_FONT = `"Inter", sans-serif`;
 
 const PORTRAIT_URL =
   "https://images.unsplash.com/photo-1612485842581-0dce50d5268f?w=900&q=80&fit=crop";
@@ -25,6 +30,34 @@ const interests = [
 ];
 
 export default function About() {
+  useEffect(() => {
+    const adobeFontHref = "https://use.typekit.net/brk5oxs.css";
+    const existingLink = document.querySelector(`link[href="${adobeFontHref}"]`);
+
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = adobeFontHref;
+      document.head.appendChild(link);
+    }
+
+    async function loadFonts() {
+      if ("fonts" in document) {
+        try {
+          await Promise.all([
+            document.fonts.load(`700 120px "normalidad-extended-medium"`),
+            document.fonts.load(`200 24px "normalidad-compact-medium"`),
+          ]);
+          await document.fonts.ready;
+        } catch {
+          await document.fonts.ready;
+        }
+      }
+    }
+
+    loadFonts();
+  }, []);
+
   return (
     <main style={{ background: "#ECEAE6" }}>
       {/* ─── HERO ─── */}
@@ -60,12 +93,14 @@ export default function About() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.7rem",
-              fontWeight: 400,
-              letterSpacing: "0.18em",
+              fontFamily: ACCENT_FONT,
+              fontSize: "0.78rem",
+              fontWeight: 200,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: "#9A9690",
+              color: "#1C1C1A",
               marginBottom: "1.8rem",
             }}
           >
@@ -78,11 +113,13 @@ export default function About() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.22, 0.61, 0.36, 1] }}
             style={{
-              fontFamily: "Syne, sans-serif",
-              fontSize: "clamp(3rem, 6.5vw, 8rem)",
-              fontWeight: 800,
-              lineHeight: 0.95,
-              letterSpacing: "-0.025em",
+              fontFamily: TITLE_FONT,
+              fontSize: "clamp(2.8rem, 6vw, 7.4rem)",
+              fontWeight: 700,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              lineHeight: 0.92,
+              letterSpacing: "-0.055em",
               color: "#1C1C1A",
               maxWidth: "18ch",
               marginBottom: "0",
@@ -129,7 +166,7 @@ export default function About() {
           >
             <p
               style={{
-                fontFamily: "Inter, sans-serif",
+                fontFamily: BODY_FONT,
                 fontSize: "clamp(1rem, 1.4vw, 1.22rem)",
                 fontWeight: 300,
                 lineHeight: 1.82,
@@ -143,7 +180,7 @@ export default function About() {
             </p>
             <p
               style={{
-                fontFamily: "Inter, sans-serif",
+                fontFamily: BODY_FONT,
                 fontSize: "clamp(1rem, 1.4vw, 1.22rem)",
                 fontWeight: 300,
                 lineHeight: 1.82,
@@ -158,7 +195,7 @@ export default function About() {
             </p>
             <p
               style={{
-                fontFamily: "Inter, sans-serif",
+                fontFamily: BODY_FONT,
                 fontSize: "clamp(1rem, 1.4vw, 1.22rem)",
                 fontWeight: 300,
                 lineHeight: 1.82,
@@ -214,12 +251,14 @@ export default function About() {
             <div>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "0.65rem",
-                  fontWeight: 400,
-                  letterSpacing: "0.16em",
+                  fontFamily: ACCENT_FONT,
+                  fontSize: "0.68rem",
+                  fontWeight: 200,
+                  fontStyle: "normal",
+                  fontSynthesis: "none",
+                  letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  color: "#9A9690",
+                  color: "#1C1C1A",
                   marginBottom: "0.8rem",
                 }}
               >
@@ -227,11 +266,13 @@ export default function About() {
               </p>
               <h2
                 style={{
-                  fontFamily: "Syne, sans-serif",
-                  fontSize: "clamp(1.6rem, 2.5vw, 2.4rem)",
-                  fontWeight: 800,
-                  lineHeight: 1.1,
-                  letterSpacing: "-0.02em",
+                  fontFamily: TITLE_FONT,
+                  fontSize: "clamp(1.45rem, 2.2vw, 2.15rem)",
+                  fontWeight: 700,
+                  fontStyle: "normal",
+                  fontSynthesis: "none",
+                  lineHeight: 1.12,
+                  letterSpacing: "-0.04em",
                   color: "#1C1C1A",
                 }}
               >
@@ -244,7 +285,7 @@ export default function About() {
             <div>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: BODY_FONT,
                   fontSize: "0.97rem",
                   fontWeight: 300,
                   lineHeight: 1.85,
@@ -259,7 +300,7 @@ export default function About() {
               </p>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: BODY_FONT,
                   fontSize: "0.97rem",
                   fontWeight: 300,
                   lineHeight: 1.85,
@@ -285,12 +326,14 @@ export default function About() {
               >
                 <p
                   style={{
-                    fontFamily: "Syne, sans-serif",
-                    fontSize: "1.05rem",
-                    fontWeight: 600,
-                    lineHeight: 1.6,
+                    fontFamily: TITLE_FONT,
+                    fontSize: "0.95rem",
+                    fontWeight: 700,
+                    fontStyle: "normal",
+                    fontSynthesis: "none",
+                    lineHeight: 1.55,
                     color: "#2A2A28",
-                    fontStyle: "italic",
+                    letterSpacing: "-0.025em",
                   }}
                 >
                   "The best interfaces are the ones you forget you're using."
@@ -325,12 +368,14 @@ export default function About() {
             <div>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "0.65rem",
-                  fontWeight: 400,
-                  letterSpacing: "0.16em",
+                  fontFamily: ACCENT_FONT,
+                  fontSize: "0.68rem",
+                  fontWeight: 200,
+                  fontStyle: "normal",
+                  fontSynthesis: "none",
+                  letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  color: "#9A9690",
+                  color: "#1C1C1A",
                   marginBottom: "0.8rem",
                 }}
               >
@@ -338,11 +383,13 @@ export default function About() {
               </p>
               <h2
                 style={{
-                  fontFamily: "Syne, sans-serif",
-                  fontSize: "clamp(1.6rem, 2.5vw, 2.4rem)",
-                  fontWeight: 800,
-                  lineHeight: 1.1,
-                  letterSpacing: "-0.02em",
+                  fontFamily: TITLE_FONT,
+                  fontSize: "clamp(1.45rem, 2.2vw, 2.15rem)",
+                  fontWeight: 700,
+                  fontStyle: "normal",
+                  fontSynthesis: "none",
+                  lineHeight: 1.12,
+                  letterSpacing: "-0.04em",
                   color: "#1C1C1A",
                 }}
               >
@@ -376,12 +423,14 @@ export default function About() {
                   >
                     <p
                       style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "0.6rem",
-                        fontWeight: 400,
-                        letterSpacing: "0.14em",
+                        fontFamily: ACCENT_FONT,
+                        fontSize: "0.62rem",
+                        fontWeight: 200,
+                        fontStyle: "normal",
+                        fontSynthesis: "none",
+                        letterSpacing: "0.05em",
                         textTransform: "uppercase",
-                        color: "#9A9690",
+                        color: "#1C1C1A",
                         marginBottom: "0.4rem",
                       }}
                     >
@@ -389,10 +438,10 @@ export default function About() {
                     </p>
                     <p
                       style={{
-                        fontFamily: "Inter, sans-serif",
+                        fontFamily: BODY_FONT,
                         fontSize: "0.88rem",
                         fontWeight: 400,
-                        color: "#3A3A36",
+                        color: "#1C1C1A",
                         lineHeight: 1.5,
                       }}
                     >
@@ -423,12 +472,14 @@ export default function About() {
           >
             <p
               style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "0.65rem",
-                fontWeight: 400,
-                letterSpacing: "0.16em",
+                fontFamily: ACCENT_FONT,
+                fontSize: "0.68rem",
+                fontWeight: 200,
+                fontStyle: "normal",
+                fontSynthesis: "none",
+                letterSpacing: "0.05em",
                 textTransform: "uppercase",
-                color: "#9A9690",
+                color: "#1C1C1A",
                 marginBottom: "3rem",
               }}
             >
@@ -455,10 +506,10 @@ export default function About() {
                 >
                   <p
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: BODY_FONT,
                       fontSize: "0.82rem",
                       fontWeight: 400,
-                      color: "#3A3A36",
+                      color: "#1C1C1A",
                     }}
                   >
                     {item}
@@ -479,12 +530,14 @@ export default function About() {
             <Link
               to="/contact"
               style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "0.8rem",
-                fontWeight: 400,
+                fontFamily: ACCENT_FONT,
+                fontSize: "0.78rem",
+                fontWeight: 200,
+                fontStyle: "normal",
+                fontSynthesis: "none",
                 color: "#1C1C1A",
                 textDecoration: "none",
-                letterSpacing: "0.04em",
+                letterSpacing: "0.03em",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "0.6rem",
@@ -492,7 +545,8 @@ export default function About() {
                 paddingBottom: "0.2rem",
               }}
             >
-              Get in touch →
+              Get in touch
+              <span style={{ fontFamily: BODY_FONT, fontSize: "0.9rem" }}>→</span>
             </Link>
           </motion.div>
         </div>

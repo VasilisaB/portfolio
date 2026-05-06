@@ -1,11 +1,15 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AtmosphericImage } from "../components/AtmosphericImage";
 import wilbotOverview1 from "../../assets/images/wilbot-overview1.png";
-import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
 import walkableOverviewWide5 from "../../assets/images/walkable-overview-wide5.png";
+import eclypt1 from "../../assets/images/eclypt-overview-wide2png.png";
 
+
+const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
+const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
+const BODY_FONT = `"Inter", sans-serif`;
 
 const projects = [
   {
@@ -41,20 +45,20 @@ const projects = [
     partner: null,
     type: "Experimental Branding / Visual Identity",
     role: "Art direction, brand concept, visual system design",
-    img: "https://images.unsplash.com/photo-1658051794980-c3fd2f67e255?w=1200&q=80&fit=crop",
+    img: eclypt1,
     mood: "sculptural, editorial, experimental, dark-luxury",
   },
   {
     num: "04",
     slug: "project-4",
-    title: "Project Title Placeholder",
+    title: "Coming soon",
     description:
-      "A placeholder project description for a future case study. Keep the layout visually consistent with the other projects.",
+      "A new project is on the way. Stay tuned for the next case study and fresh work updates.",
     partner: null,
-    type: "Project Type Placeholder",
-    role: "Role Placeholder",
+    type: "Coming soon",
+    role: "Coming soon",
     img: "https://images.unsplash.com/photo-1693760631069-89e1f6fee6b2?w=1200&q=80&fit=crop",
-    mood: "abstract, minimal, atmospheric",
+    mood: "coming soon",
   },
 ];
 
@@ -90,7 +94,6 @@ function ProjectBlock({
           gridTemplateColumns: isEven ? "2fr 3fr" : "3fr 2fr",
           gap: "5rem",
           alignItems: "center",
-          flexDirection: isEven ? "row" : "row-reverse",
         }}
       >
         {/* Text block */}
@@ -98,12 +101,14 @@ function ProjectBlock({
           {/* Number */}
           <p
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.65rem",
-              fontWeight: 400,
-              letterSpacing: "0.16em",
+              fontFamily: ACCENT_FONT,
+              fontSize: "0.72rem",
+              fontWeight: 200,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              letterSpacing: "0.05em",
               textTransform: "uppercase",
-              color: "#9A9690",
+              color: "#1C1C1A",
               marginBottom: "1.2rem",
             }}
           >
@@ -113,11 +118,13 @@ function ProjectBlock({
           {/* Title */}
           <h2
             style={{
-              fontFamily: "Syne, sans-serif",
-              fontSize: "clamp(2.2rem, 3.5vw, 3.8rem)",
-              fontWeight: 800,
-              lineHeight: 1.02,
-              letterSpacing: "-0.02em",
+              fontFamily: TITLE_FONT,
+              fontSize: "clamp(2rem, 3.1vw, 3.5rem)",
+              fontWeight: 700,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              lineHeight: 1,
+              letterSpacing: "-0.04em",
               color: "#1C1C1A",
               marginBottom: "1.6rem",
             }}
@@ -128,7 +135,7 @@ function ProjectBlock({
           {/* Description */}
           <p
             style={{
-              fontFamily: "Inter, sans-serif",
+              fontFamily: BODY_FONT,
               fontSize: "0.95rem",
               fontWeight: 300,
               lineHeight: 1.75,
@@ -156,74 +163,85 @@ function ProjectBlock({
               <div>
                 <p
                   style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontSize: "0.6rem",
-                    fontWeight: 400,
-                    letterSpacing: "0.14em",
+                    fontFamily: ACCENT_FONT,
+                    fontSize: "0.62rem",
+                    fontWeight: 200,
+                    fontStyle: "normal",
+                    fontSynthesis: "none",
+                    letterSpacing: "0.05em",
                     textTransform: "uppercase",
-                    color: "#9A9690",
-                    marginBottom: "0.3rem",
+                    color: "#1C1C1A",
+                    marginBottom: "0.35rem",
                   }}
                 >
                   Partner
                 </p>
                 <p
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: BODY_FONT,
                     fontSize: "0.82rem",
                     fontWeight: 400,
                     color: "#3A3A36",
+                    lineHeight: 1.5,
                   }}
                 >
                   {project.partner}
                 </p>
               </div>
             )}
+
             <div>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "0.6rem",
-                  fontWeight: 400,
-                  letterSpacing: "0.14em",
+                  fontFamily: ACCENT_FONT,
+                  fontSize: "0.62rem",
+                  fontWeight: 200,
+                  fontStyle: "normal",
+                  fontSynthesis: "none",
+                  letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  color: "#9A9690",
-                  marginBottom: "0.3rem",
+                  color: "#1C1C1A",
+                  marginBottom: "0.35rem",
                 }}
               >
                 Project
               </p>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: BODY_FONT,
                   fontSize: "0.82rem",
                   fontWeight: 400,
                   color: "#3A3A36",
+                  lineHeight: 1.5,
                 }}
               >
                 {project.type}
               </p>
             </div>
+
             <div>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "0.6rem",
-                  fontWeight: 400,
-                  letterSpacing: "0.14em",
+                  fontFamily: ACCENT_FONT,
+                  fontSize: "0.62rem",
+                  fontWeight: 200,
+                  fontStyle: "normal",
+                  fontSynthesis: "none",
+                  letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  color: "#9A9690",
-                  marginBottom: "0.3rem",
+                  color: "#1C1C1A",
+                  marginBottom: "0.35rem",
                 }}
               >
                 Role
               </p>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: BODY_FONT,
                   fontSize: "0.82rem",
                   fontWeight: 400,
                   color: "#3A3A36",
+                  lineHeight: 1.5,
                 }}
               >
                 {project.role}
@@ -235,12 +253,14 @@ function ProjectBlock({
           <Link
             to={`/work/${project.slug}`}
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.82rem",
-              fontWeight: 400,
+              fontFamily: ACCENT_FONT,
+              fontSize: "0.8rem",
+              fontWeight: 200,
+              fontStyle: "normal",
+              fontSynthesis: "none",
               color: "#1C1C1A",
               textDecoration: "none",
-              letterSpacing: "0.04em",
+              letterSpacing: "0.03em",
               display: "inline-flex",
               alignItems: "center",
               gap: hovered ? "1rem" : "0.6rem",
@@ -253,6 +273,7 @@ function ProjectBlock({
             <span
               style={{
                 display: "inline-block",
+                fontFamily: BODY_FONT,
                 transition: "transform 0.35s ease",
                 transform: hovered ? "translateX(4px)" : "translateX(0)",
               }}
@@ -282,6 +303,34 @@ function ProjectBlock({
 }
 
 export default function Work() {
+  useEffect(() => {
+    const adobeFontHref = "https://use.typekit.net/brk5oxs.css";
+    const existingLink = document.querySelector(`link[href="${adobeFontHref}"]`);
+
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = adobeFontHref;
+      document.head.appendChild(link);
+    }
+
+    async function loadFonts() {
+      if ("fonts" in document) {
+        try {
+          await Promise.all([
+            document.fonts.load(`700 120px "normalidad-extended-medium"`),
+            document.fonts.load(`200 24px "normalidad-compact-medium"`),
+          ]);
+          await document.fonts.ready;
+        } catch {
+          await document.fonts.ready;
+        }
+      }
+    }
+
+    loadFonts();
+  }, []);
+
   return (
     <main
       style={{
@@ -290,7 +339,14 @@ export default function Work() {
         background: "#ECEAE6",
       }}
     >
-      <div className="vb-section" style={{ maxWidth: "1300px", margin: "0 auto", padding: "0 3.5rem" }}>
+      <div
+        className="vb-section"
+        style={{
+          maxWidth: "1300px",
+          margin: "0 auto",
+          padding: "0 3.5rem",
+        }}
+      >
         {/* Oversized heading */}
         <div style={{ position: "relative", marginBottom: "0" }}>
           <motion.p
@@ -298,12 +354,14 @@ export default function Work() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.7rem",
-              fontWeight: 400,
-              letterSpacing: "0.18em",
+              fontFamily: ACCENT_FONT,
+              fontSize: "0.78rem",
+              fontWeight: 200,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: "#9A9690",
+              color: "#1C1C1A",
               marginBottom: "1.5rem",
             }}
           >
@@ -315,11 +373,13 @@ export default function Work() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 0.61, 0.36, 1] }}
             style={{
-              fontFamily: "Syne, sans-serif",
-              fontSize: "clamp(4rem, 9vw, 11rem)",
-              fontWeight: 800,
-              lineHeight: 0.9,
-              letterSpacing: "-0.03em",
+              fontFamily: TITLE_FONT,
+              fontSize: "clamp(3.6rem, 8.2vw, 10rem)",
+              fontWeight: 700,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              lineHeight: 0.88,
+              letterSpacing: "-0.055em",
               color: "#1C1C1A",
               marginBottom: "0",
             }}

@@ -1,336 +1,48 @@
-import { useEffect, useMemo, useRef } from "react";
-import type { CSSProperties } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
 import { AtmosphericImage } from "../components/AtmosphericImage";
 import wilbotOverview2 from "../../assets/images/wilbot-overview2.png";
 import walkableOverviewWide5 from "../../assets/images/walkable-overview-wide5.png";
+import eclypt1 from "../../assets/images/eclypt-overview-wide2png.png";
 
 const PORTRAIT_URL =
   "https://images.unsplash.com/photo-1612485842581-0dce50d5268f?w=900&q=80&fit=crop";
 
-type PixelLine = {
-  text: string;
-  color?: string;
-};
+const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
+const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
+const BODY_FONT = `"Inter", sans-serif`;
 
-type Particle = {
-  x: number;
-  y: number;
-  homeX: number;
-  homeY: number;
-  size: number;
-  color: string;
-};
-
-type PixelHeaderProps = {
-  lines: PixelLine[];
-  fontFamily?: string;
-  fontWeight?: number | string;
-  fontStyle?: string;
-  className?: string;
-  style?: CSSProperties;
-  sampleGap?: number;
-  pixelSize?: number;
-  repelRadius?: number;
-  repelStrength?: number;
-};
-
-function PixelHeader({
-  lines,
-  fontFamily = `"redaction-70", sans-serif`,
-  fontWeight = 70,
-  fontStyle = "normal",
-  className = "",
-  style,
-  sampleGap = 3,
-  pixelSize = 5,
-  repelRadius = 5,
-  repelStrength = 4,
-}: PixelHeaderProps) {
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const frameRef = useRef<number | null>(null);
-
-  const mouseRef = useRef({
-    x: -9999,
-    y: -9999,
-    active: false,
-  });
-
-  const plainText = useMemo(() => lines.map((line) => line.text).join(" "), [lines]);
-
-  const lineKey = useMemo(
-    () => lines.map((line) => `${line.text}-${line.color ?? ""}`).join("|"),
-    [lines]
-  );
-
+export default function Home() {
   useEffect(() => {
-    const wrapper = wrapperRef.current;
-    const canvas = canvasRef.current;
+    const adobeFontHref = "https://use.typekit.net/brk5oxs.css";
+    const existingLink = document.querySelector(`link[href="${adobeFontHref}"]`);
 
-    if (!wrapper || !canvas) return;
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = adobeFontHref;
+      document.head.appendChild(link);
+    }
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let disposed = false;
-    let resizeTimeout: number | undefined;
-
-    const buildParticles = () => {
-      const rect = wrapper.getBoundingClientRect();
-      const width = Math.max(320, Math.floor(rect.width));
-      const height = Math.max(260, Math.floor(rect.height));
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, width, height);
-      ctx.imageSmoothingEnabled = false;
-
-      const offscreen = document.createElement("canvas");
-      offscreen.width = width;
-      offscreen.height = height;
-
-      const offCtx = offscreen.getContext("2d", {
-        willReadFrequently: true,
-      });
-
-      if (!offCtx) return;
-
-      offCtx.clearRect(0, 0, width, height);
-      offCtx.imageSmoothingEnabled = false;
-      offCtx.textAlign = "left";
-      offCtx.textBaseline = "top";
-
-      let fontSize = Math.min(Math.max(width * 0.15, 56), 155);
-      let lineHeight = fontSize * 0.9;
-
-      const setFont = () => {
-        offCtx.font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
-      };
-
-      setFont();
-
-      const getLongestLineWidth = () => {
-        return Math.max(...lines.map((line) => offCtx.measureText(line.text).width));
-      };
-
-      while (getLongestLineWidth() > width && fontSize > 42) {
-        fontSize -= 3;
-        lineHeight = fontSize * 0.9;
-        setFont();
-      }
-
-      const totalTextHeight = lineHeight * lines.length;
-      const startX = 0;
-      const startY = Math.max(0, (height - totalTextHeight) / 2);
-
-      lines.forEach((line, index) => {
-        offCtx.fillStyle = line.color ?? "#1C1C1A";
-        offCtx.fillText(line.text, startX, startY + index * lineHeight);
-      });
-
-      const imageData = offCtx.getImageData(0, 0, width, height);
-      const data = imageData.data;
-      const particles: Particle[] = [];
-
-      for (let y = 0; y < height; y += sampleGap) {
-        for (let x = 0; x < width; x += sampleGap) {
-          const index = (y * width + x) * 4;
-          const alpha = data[index + 3];
-
-          if (alpha > 80) {
-            const r = data[index];
-            const g = data[index + 1];
-            const b = data[index + 2];
-
-            particles.push({
-              x,
-              y,
-              homeX: x,
-              homeY: y,
-              size: pixelSize,
-              color: `rgba(${r}, ${g}, ${b}, ${alpha / 255})`,
-            });
-          }
-        }
-      }
-
-      particlesRef.current = particles;
-    };
-
-    const animate = () => {
-      if (disposed) return;
-
-      const rect = wrapper.getBoundingClientRect();
-      const width = Math.max(320, Math.floor(rect.width));
-      const height = Math.max(260, Math.floor(rect.height));
-
-      ctx.clearRect(0, 0, width, height);
-      ctx.imageSmoothingEnabled = false;
-
-      const mouse = mouseRef.current;
-      const particles = particlesRef.current;
-
-      for (const particle of particles) {
-        let targetX = particle.homeX;
-        let targetY = particle.homeY;
-
-        if (mouse.active) {
-          const dx = particle.homeX - mouse.x;
-          const dy = particle.homeY - mouse.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < repelRadius && distance > 0.001) {
-            const proximity = 1 - distance / repelRadius;
-            const displacement = proximity * proximity * repelStrength;
-
-            targetX = particle.homeX + (dx / distance) * displacement;
-            targetY = particle.homeY + (dy / distance) * displacement;
-          }
-        }
-
-        const ease = mouse.active ? 0.10 : 0.16;
-
-        particle.x += (targetX - particle.x) * ease;
-        particle.y += (targetY - particle.y) * ease;
-
-        ctx.fillStyle = particle.color;
-        ctx.fillRect(
-          Math.round(particle.x),
-          Math.round(particle.y),
-          particle.size,
-          particle.size
-        );
-      }
-
-      frameRef.current = requestAnimationFrame(animate);
-    };
-
-    const initialize = async () => {
+    async function loadFonts() {
       if ("fonts" in document) {
         try {
-          await document.fonts.load(`${fontStyle} ${fontWeight} 120px ${fontFamily}`);
+          await Promise.all([
+            document.fonts.load(`700 120px "normalidad-extended-medium"`),
+            document.fonts.load(`200 24px "normalidad-compact-medium"`),
+          ]);
           await document.fonts.ready;
         } catch {
           await document.fonts.ready;
         }
       }
+    }
 
-      if (disposed) return;
+    loadFonts();
+  }, []);
 
-      buildParticles();
-
-      if (frameRef.current) {
-        cancelAnimationFrame(frameRef.current);
-      }
-
-      animate();
-    };
-
-    const handlePointerMove = (event: PointerEvent) => {
-      const rect = wrapper.getBoundingClientRect();
-
-      mouseRef.current.x = event.clientX - rect.left;
-      mouseRef.current.y = event.clientY - rect.top;
-      mouseRef.current.active = true;
-    };
-
-    const handlePointerLeave = () => {
-      mouseRef.current.active = false;
-      mouseRef.current.x = -9999;
-      mouseRef.current.y = -9999;
-    };
-
-    const resizeObserver = new ResizeObserver(() => {
-      window.clearTimeout(resizeTimeout);
-
-      resizeTimeout = window.setTimeout(() => {
-        buildParticles();
-      }, 120);
-    });
-
-    resizeObserver.observe(wrapper);
-
-    wrapper.addEventListener("pointermove", handlePointerMove);
-    wrapper.addEventListener("pointerleave", handlePointerLeave);
-
-    initialize();
-
-    return () => {
-      disposed = true;
-
-      if (frameRef.current) {
-        cancelAnimationFrame(frameRef.current);
-      }
-
-      window.clearTimeout(resizeTimeout);
-      resizeObserver.disconnect();
-
-      wrapper.removeEventListener("pointermove", handlePointerMove);
-      wrapper.removeEventListener("pointerleave", handlePointerLeave);
-    };
-  }, [
-    lineKey,
-    fontFamily,
-    fontWeight,
-    fontStyle,
-    sampleGap,
-    pixelSize,
-    repelRadius,
-    repelStrength,
-  ]);
-
-  return (
-    <div
-      ref={wrapperRef}
-      className={className}
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "clamp(360px, 44vw, 620px)",
-        cursor: "crosshair",
-        ...style,
-      }}
-    >
-      <h1
-        style={{
-          position: "absolute",
-          width: "1px",
-          height: "1px",
-          padding: 0,
-          margin: "-1px",
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          border: 0,
-          clip: "rect(0, 0, 0, 0)",
-        }}
-      >
-        {plainText}
-      </h1>
-
-      <canvas
-        ref={canvasRef}
-        aria-hidden="true"
-        style={{
-          display: "block",
-          width: "100%",
-          height: "100%",
-          imageRendering: "pixelated",
-        }}
-      />
-    </div>
-  );
-}
-
-export default function Home() {
   return (
     <main>
       {/* ─── HERO ─── */}
@@ -367,17 +79,19 @@ export default function Home() {
             paddingTop: "10rem",
           }}
         >
-          {/* Label */}
+          {/* Label / normalidad accent */}
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.72rem",
-              fontWeight: 400,
-              letterSpacing: "0.18em",
-              color: "#9A9690",
+              fontFamily: ACCENT_FONT,
+              fontSize: "0.82rem",
+              fontWeight: 200,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              letterSpacing: "0.08em",
+              color: "#1C1C1A",
               marginBottom: "2rem",
               textTransform: "uppercase",
             }}
@@ -386,7 +100,7 @@ export default function Home() {
           </motion.p>
 
           {/* Hero headline */}
-          <motion.div
+          <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -395,26 +109,25 @@ export default function Home() {
               ease: [0.22, 0.61, 0.36, 1],
             }}
             style={{
-              width: "min(100%, 1100px)",
+              fontFamily: TITLE_FONT,
+              fontSize: "clamp(3rem, 6.8vw, 8.5rem)",
+              fontWeight: 700,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              lineHeight: 0.9,
+              color: "#1C1C1A",
+              letterSpacing: "-0.055em",
+              maxWidth: "15ch",
               marginBottom: "0",
             }}
           >
-            <PixelHeader
-              fontFamily={`"redaction-70", sans-serif`}
-              fontWeight={700}
-              fontStyle="normal"
-              sampleGap={4}
-              pixelSize={4.35}
-              repelRadius={900}
-              repelStrength={2.5}
-              lines={[
-                { text: "Designing", color: "#1C1C1A" },
-                { text: "systems with", color: "#1C1C1A" },
-                { text: "structure", color: "#7A7872" },
-                { text: "& feeling.", color: "#1C1C1A" },
-              ]}
-            />
-          </motion.div>
+            Designing
+            <br />
+            systems with
+            <br />
+            <span style={{ color: "#7A7872" }}>structure</span>
+            <br />& feeling.
+          </motion.h1>
 
           {/* Right-aligned scroll hint */}
           <motion.div
@@ -431,12 +144,14 @@ export default function Home() {
             <Link
               to="/work"
               style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "0.78rem",
-                fontWeight: 400,
+                fontFamily: ACCENT_FONT,
+                fontSize: "0.8rem",
+                fontWeight: 200,
+                fontStyle: "normal",
+                fontSynthesis: "none",
                 color: "#7A7872",
                 textDecoration: "none",
-                letterSpacing: "0.08em",
+                letterSpacing: "0.03em",
                 display: "flex",
                 alignItems: "center",
                 gap: "0.75rem",
@@ -488,7 +203,7 @@ export default function Home() {
           >
             <p
               style={{
-                fontFamily: "Inter, sans-serif",
+                fontFamily: BODY_FONT,
                 fontSize: "clamp(1.1rem, 1.5vw, 1.4rem)",
                 fontWeight: 300,
                 lineHeight: 1.72,
@@ -528,20 +243,23 @@ export default function Home() {
                 <div key={label}>
                   <p
                     style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontSize: "0.68rem",
-                      fontWeight: 400,
-                      letterSpacing: "0.15em",
+                      fontFamily: ACCENT_FONT,
+                      fontSize: "0.72rem",
+                      fontWeight: 200,
+                      fontStyle: "normal",
+                      fontSynthesis: "none",
+                      letterSpacing: "0.05em",
                       textTransform: "uppercase",
-                      color: "#9A9690",
+                      color: "#1C1C1A",
                       marginBottom: "0.35rem",
                     }}
                   >
                     {label}
                   </p>
+
                   <p
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: BODY_FONT,
                       fontSize: "0.88rem",
                       fontWeight: 400,
                       color: "#3A3A36",
@@ -557,12 +275,14 @@ export default function Home() {
               <Link
                 to="/about"
                 style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "0.8rem",
-                  fontWeight: 400,
+                  fontFamily: ACCENT_FONT,
+                  fontSize: "0.78rem",
+                  fontWeight: 200,
+                  fontStyle: "normal",
+                  fontSynthesis: "none",
                   color: "#1C1C1A",
                   textDecoration: "none",
-                  letterSpacing: "0.04em",
+                  letterSpacing: "0.03em",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "0.6rem",
@@ -572,7 +292,9 @@ export default function Home() {
                 }}
               >
                 More about me
-                <span style={{ fontFamily: "Inter", fontSize: "0.9rem" }}>→</span>
+                <span style={{ fontFamily: BODY_FONT, fontSize: "0.9rem" }}>
+                  →
+                </span>
               </Link>
             </div>
           </motion.div>
@@ -619,11 +341,13 @@ export default function Home() {
         >
           <p
             style={{
-              fontFamily: "Syne, sans-serif",
+              fontFamily: TITLE_FONT,
               fontSize: "clamp(0.95rem, 1.2vw, 1.1rem)",
-              fontWeight: 600,
+              fontWeight: 700,
+              fontStyle: "normal",
+              fontSynthesis: "none",
               color: "#1C1C1A",
-              letterSpacing: "0.01em",
+              letterSpacing: "-0.035em",
             }}
           >
             Selected Work
@@ -632,12 +356,14 @@ export default function Home() {
           <Link
             to="/work"
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.78rem",
-              fontWeight: 400,
+              fontFamily: ACCENT_FONT,
+              fontSize: "0.8rem",
+              fontWeight: 200,
+              fontStyle: "normal",
+              fontSynthesis: "none",
               color: "#7A7872",
               textDecoration: "none",
-              letterSpacing: "0.05em",
+              letterSpacing: "0.03em",
               display: "flex",
               alignItems: "center",
               gap: "0.5rem",
@@ -677,7 +403,7 @@ export default function Home() {
               title: "Eclypt",
               type: "Experimental Branding",
               to: "/work/eclypt",
-              img: "https://images.unsplash.com/photo-1658051794980-c3fd2f67e255?w=800&q=75&fit=crop",
+              img: eclypt1,
             },
           ].map(({ num, title, type, to, img }, i) => (
             <motion.div
@@ -706,11 +432,13 @@ export default function Home() {
                   <div>
                     <p
                       style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: "0.65rem",
-                        fontWeight: 400,
-                        color: "#9A9690",
-                        letterSpacing: "0.12em",
+                        fontFamily: ACCENT_FONT,
+                        fontSize: "0.72rem",
+                        fontWeight: 200,
+                        fontStyle: "normal",
+                        fontSynthesis: "none",
+                        color: "#1C1C1A",
+                        letterSpacing: "0.04em",
                         textTransform: "uppercase",
                         marginBottom: "0.3rem",
                       }}
@@ -720,11 +448,14 @@ export default function Home() {
 
                     <p
                       style={{
-                        fontFamily: "Syne, sans-serif",
+                        fontFamily: TITLE_FONT,
                         fontSize: "1rem",
                         fontWeight: 700,
+                        fontStyle: "normal",
+                        fontSynthesis: "none",
                         color: "#1C1C1A",
                         marginBottom: "0.25rem",
+                        letterSpacing: "-0.03em",
                       }}
                     >
                       {title}
@@ -732,7 +463,7 @@ export default function Home() {
 
                     <p
                       style={{
-                        fontFamily: "Inter, sans-serif",
+                        fontFamily: BODY_FONT,
                         fontSize: "0.75rem",
                         fontWeight: 400,
                         color: "#7A7872",
@@ -744,9 +475,9 @@ export default function Home() {
 
                   <span
                     style={{
-                      fontFamily: "Inter, sans-serif",
+                      fontFamily: BODY_FONT,
                       fontSize: "0.8rem",
-                      color: "#9A9690",
+                      color: "#1C1C1A",
                     }}
                   >
                     →

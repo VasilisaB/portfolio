@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
+
+const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
+const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
+const BODY_FONT = `"Inter", sans-serif`;
 
 const links = [
   {
@@ -28,13 +32,43 @@ export default function Contact() {
   });
   const [focused, setFocused] = useState<string | null>(null);
 
+  useEffect(() => {
+    const adobeFontHref = "https://use.typekit.net/brk5oxs.css";
+    const existingLink = document.querySelector(`link[href="${adobeFontHref}"]`);
+
+    if (!existingLink) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = adobeFontHref;
+      document.head.appendChild(link);
+    }
+
+    async function loadFonts() {
+      if ("fonts" in document) {
+        try {
+          await Promise.all([
+            document.fonts.load(`700 120px "normalidad-extended-medium"`),
+            document.fonts.load(`200 24px "normalidad-compact-medium"`),
+          ]);
+          await document.fonts.ready;
+        } catch {
+          await document.fonts.ready;
+        }
+      }
+    }
+
+    loadFonts();
+  }, []);
+
   const inputStyle = (field: string) => ({
     width: "100%",
     padding: "1rem 0",
     background: "transparent",
     border: "none",
-    borderBottom: `1px solid ${focused === field ? "rgba(28, 28, 26, 0.4)" : "rgba(28, 28, 26, 0.12)"}`,
-    fontFamily: "Inter, sans-serif",
+    borderBottom: `1px solid ${
+      focused === field ? "rgba(28, 28, 26, 0.4)" : "rgba(28, 28, 26, 0.12)"
+    }`,
+    fontFamily: BODY_FONT,
     fontSize: "0.9rem",
     fontWeight: 300,
     color: "#1C1C1A",
@@ -63,12 +97,14 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "0.7rem",
-              fontWeight: 400,
-              letterSpacing: "0.18em",
+              fontFamily: ACCENT_FONT,
+              fontSize: "0.78rem",
+              fontWeight: 200,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: "#9A9690",
+              color: "#1C1C1A",
               marginBottom: "1.8rem",
             }}
           >
@@ -80,11 +116,13 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 0.61, 0.36, 1] }}
             style={{
-              fontFamily: "Syne, sans-serif",
-              fontSize: "clamp(3.5rem, 7vw, 9rem)",
-              fontWeight: 800,
-              lineHeight: 0.92,
-              letterSpacing: "-0.03em",
+              fontFamily: TITLE_FONT,
+              fontSize: "clamp(3.2rem, 6.6vw, 8.4rem)",
+              fontWeight: 700,
+              fontStyle: "normal",
+              fontSynthesis: "none",
+              lineHeight: 0.9,
+              letterSpacing: "-0.055em",
               color: "#1C1C1A",
               marginBottom: "2.5rem",
             }}
@@ -97,7 +135,7 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15 }}
             style={{
-              fontFamily: "Inter, sans-serif",
+              fontFamily: BODY_FONT,
               fontSize: "1rem",
               fontWeight: 300,
               lineHeight: 1.75,
@@ -138,12 +176,14 @@ export default function Contact() {
           >
             <p
               style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "0.65rem",
-                fontWeight: 400,
-                letterSpacing: "0.16em",
+                fontFamily: ACCENT_FONT,
+                fontSize: "0.68rem",
+                fontWeight: 200,
+                fontStyle: "normal",
+                fontSynthesis: "none",
+                letterSpacing: "0.05em",
                 textTransform: "uppercase",
-                color: "#9A9690",
+                color: "#1C1C1A",
                 marginBottom: "2.5rem",
               }}
             >
@@ -168,15 +208,18 @@ export default function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      fontFamily: "Syne, sans-serif",
-                      fontSize: "1.3rem",
+                      fontFamily: TITLE_FONT,
+                      fontSize: "1.15rem",
                       fontWeight: 700,
+                      fontStyle: "normal",
+                      fontSynthesis: "none",
                       color: "#1C1C1A",
                       textDecoration: "none",
-                      letterSpacing: "-0.01em",
+                      letterSpacing: "-0.035em",
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "baseline",
+                      gap: "1.5rem",
                       transition: "color 0.3s ease",
                     }}
                     onMouseEnter={(e) =>
@@ -189,11 +232,13 @@ export default function Contact() {
                     {label}
                     <span
                       style={{
-                        fontFamily: "Inter, sans-serif",
+                        fontFamily: ACCENT_FONT,
                         fontSize: "0.72rem",
-                        fontWeight: 300,
-                        color: "#9A9690",
-                        letterSpacing: "0.04em",
+                        fontWeight: 400,
+                        fontStyle: "normal",
+                        fontSynthesis: "none",
+                        color: "#1C1C1A",
+                        letterSpacing: "0.03em",
                       }}
                     >
                       {note}
@@ -212,12 +257,14 @@ export default function Contact() {
             >
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: ACCENT_FONT,
                   fontSize: "0.68rem",
-                  fontWeight: 400,
-                  letterSpacing: "0.14em",
+                  fontWeight: 200,
+                  fontStyle: "normal",
+                  fontSynthesis: "none",
+                  letterSpacing: "0.05em",
                   textTransform: "uppercase",
-                  color: "#9A9690",
+                  color: "#1C1C1A",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -225,7 +272,7 @@ export default function Contact() {
               </p>
               <p
                 style={{
-                  fontFamily: "Inter, sans-serif",
+                  fontFamily: BODY_FONT,
                   fontSize: "0.88rem",
                   fontWeight: 400,
                   color: "#5A5A56",
@@ -244,12 +291,14 @@ export default function Contact() {
           >
             <p
               style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "0.65rem",
-                fontWeight: 400,
-                letterSpacing: "0.16em",
+                fontFamily: ACCENT_FONT,
+                fontSize: "0.68rem",
+                fontWeight: 200,
+                fontStyle: "normal",
+                fontSynthesis: "none",
+                letterSpacing: "0.05em",
                 textTransform: "uppercase",
-                color: "#9A9690",
+                color: "#1C1C1A",
                 marginBottom: "2.5rem",
               }}
             >
@@ -270,12 +319,14 @@ export default function Contact() {
                 <label
                   htmlFor="name"
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: ACCENT_FONT,
                     fontSize: "0.62rem",
                     fontWeight: 400,
-                    letterSpacing: "0.14em",
+                    fontStyle: "normal",
+                    fontSynthesis: "none",
+                    letterSpacing: "0.05em",
                     textTransform: "uppercase",
-                    color: "#9A9690",
+                    color: "#1C1C1A",
                     display: "block",
                     marginBottom: "0.4rem",
                   }}
@@ -302,12 +353,14 @@ export default function Contact() {
                 <label
                   htmlFor="email"
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: ACCENT_FONT,
                     fontSize: "0.62rem",
-                    fontWeight: 400,
-                    letterSpacing: "0.14em",
+                    fontWeight: 200,
+                    fontStyle: "normal",
+                    fontSynthesis: "none",
+                    letterSpacing: "0.05em",
                     textTransform: "uppercase",
-                    color: "#9A9690",
+                    color: "#1C1C1A",
                     display: "block",
                     marginBottom: "0.4rem",
                   }}
@@ -334,10 +387,12 @@ export default function Contact() {
                 <label
                   htmlFor="message"
                   style={{
-                    fontFamily: "Inter, sans-serif",
+                    fontFamily: ACCENT_FONT,
                     fontSize: "0.62rem",
-                    fontWeight: 400,
-                    letterSpacing: "0.14em",
+                    fontWeight: 200,
+                    fontStyle: "normal",
+                    fontSynthesis: "none",
+                    letterSpacing: "0.05em",
                     textTransform: "uppercase",
                     color: "#9A9690",
                     display: "block",
@@ -361,8 +416,12 @@ export default function Contact() {
                     padding: "1rem 0",
                     background: "transparent",
                     border: "none",
-                    borderBottom: `1px solid ${focused === "message" ? "rgba(28, 28, 26, 0.4)" : "rgba(28, 28, 26, 0.12)"}`,
-                    fontFamily: "Inter, sans-serif",
+                    borderBottom: `1px solid ${
+                      focused === "message"
+                        ? "rgba(28, 28, 26, 0.4)"
+                        : "rgba(28, 28, 26, 0.12)"
+                    }`,
+                    fontFamily: BODY_FONT,
                     fontSize: "0.9rem",
                     fontWeight: 300,
                     color: "#1C1C1A",
@@ -382,11 +441,13 @@ export default function Contact() {
                   background: "transparent",
                   border: "none",
                   borderBottom: "1px solid rgba(28, 28, 26, 0.3)",
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "0.82rem",
-                  fontWeight: 400,
+                  fontFamily: ACCENT_FONT,
+                  fontSize: "0.8rem",
+                  fontWeight: 200,
+                  fontStyle: "normal",
+                  fontSynthesis: "none",
                   color: "#1C1C1A",
-                  letterSpacing: "0.06em",
+                  letterSpacing: "0.03em",
                   cursor: "pointer",
                   display: "inline-flex",
                   alignItems: "center",
@@ -404,7 +465,10 @@ export default function Contact() {
                     "rgba(28, 28, 26, 0.3)";
                 }}
               >
-                Send message →
+                Send message
+                <span style={{ fontFamily: BODY_FONT, fontSize: "0.9rem" }}>
+                  →
+                </span>
               </button>
             </form>
           </motion.div>
