@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { SmokySection } from "../components/SmokySection";
+import cvPdfUrl from "../../assets/cv/Vasilisa-Boronnikova-CV.pdf?url";
 
 const TITLE_FONT = `"normalidad-extended-medium", sans-serif`;
 const ACCENT_FONT = `"normalidad-compact-medium", sans-serif`;
@@ -16,6 +17,12 @@ const links = [
     label: "Email",
     href: "mailto:vasilisa.boronnikova@gmail.com",
     note: "vasilisa.boronnikova@gmail.com",
+  },
+  {
+    label: "CV",
+    href: cvPdfUrl,
+    note: "Download PDF",
+    download: "Vasilisa-Boronnikova-CV.pdf",
   },
 ];
 
@@ -186,7 +193,7 @@ export default function Contact() {
             </p>
 
             <div>
-              {links.map(({ label, href, note }, i) => (
+              {links.map(({ label, href, note, target, download }, i) => (
                 <motion.div
                   key={label}
                   initial={{ opacity: 0, x: -12 }}
@@ -200,8 +207,9 @@ export default function Contact() {
                 >
                   <a
                     href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={target}
+                    rel={target === "_blank" ? "noopener noreferrer" : undefined}
+                    download={download}
                     style={{
                       fontFamily: TITLE_FONT,
                       fontSize: "1.15rem",
