@@ -16,7 +16,7 @@ const facts = [
   { label: "Education", value: "Computer Science & Design" },
   { label: "Focus areas", value: "UX/UI, Branding, Interaction" },
   { label: "Available for", value: "Internships, Collaborations, Freelance" },
-  { label: "Languages", value: "Russian, English, German" },
+  { label: "Languages", value: "English, German, Russian" },
   { label: "Currently", value: "Open to opportunities" },
 ];
 
